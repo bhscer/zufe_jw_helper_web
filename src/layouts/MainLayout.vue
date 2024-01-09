@@ -16,7 +16,7 @@
           <a
             href="https://github.com/bhscer/zufe_jw_helper_web"
             class="text-primary"
-            style="text-decoration: none;"
+            style="text-decoration: none"
             >"Almost" Open Source</a
           >
         </p>
