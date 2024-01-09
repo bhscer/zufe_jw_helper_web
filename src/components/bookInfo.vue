@@ -8,10 +8,14 @@
 
   <div v-else>
     <div v-if="user_data.status === 0">
-      <p>{{ user_data.msg }}</p>
+      <q-card
+        ><p>{{ user_data.msg }}</p></q-card
+      >
     </div>
     <div v-else-if="err_msg.length > 0">
-      <p>{{ err_msg }}</p>
+      <q-card
+        ><p>{{ err_msg }}</p></q-card
+      >
     </div>
     <div v-else>
       <q-stepper v-model="user_data.curType" color="primary" animated>

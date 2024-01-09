@@ -5,7 +5,7 @@
   >
     <q-card class="q-pa-lg">
       <h2>欢迎</h2>
-      <p>一个些小工具</p>
+      <p>一些小工具</p>
       <q-btn
         class="q-mt-md"
         label="进入选书系统"
