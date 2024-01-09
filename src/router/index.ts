@@ -44,11 +44,14 @@ export default route(function (/* { store, ssrContext } */) {
       if (to.path === '/login') {
         next();
       } else {
-        $q.notify({
-          type: 'negative',
-          message: '请先登录',
-          progress: true,
-        });
+        try {
+          $q.notify({
+            type: 'negative',
+            message: '请先登录',
+            progress: true,
+          });
+        } catch {}
+
         next('/login');
       }
     }
