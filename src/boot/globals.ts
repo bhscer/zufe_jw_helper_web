@@ -5,5 +5,4 @@ import VueViewer from 'v-viewer';
 
 export default boot(async ({ app }) => {
   app.use(VueViewer);
-  document.querySelector('.first-loading-wrp')!.remove();
 });
