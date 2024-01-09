@@ -1,0 +1,17 @@
+// app global css in SCSS form
+html[class='dark'] {
+  .bg-header-auto {
+    background: var(--q-dark);
+  }
+}
+.bg-header-auto {
+  background: var(--q-light);
+  background-color: white;
+}
+
+.svg-fill {
+  fill: $primary;
+}
+.svg-stroke {
+  stroke: $primary;
+}
