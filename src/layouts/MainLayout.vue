@@ -26,10 +26,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import ToolbarBtnGroup from 'components/ToolbarBtnGroup.vue';
 
 export default defineComponent({
   components: { ToolbarBtnGroup },
 });
+document.querySelector('.first-loading-wrp')!.remove();
 </script>

@@ -35,8 +35,6 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  document.querySelector('.first-loading-wrp')!.remove();
-
   Router.beforeEach((to, from, next) => {
     // console.log(to); // 即将要跳转的路由
     // console.log(from); // 即将要离开的路由
