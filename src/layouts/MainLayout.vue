@@ -3,7 +3,6 @@
     <q-header reveal class="bg-header-auto">
       <q-toolbar class="text-primary">
         <q-toolbar-title> 教务助手 </q-toolbar-title>
-
         <toolbar-btn-group></toolbar-btn-group>
       </q-toolbar>
     </q-header>

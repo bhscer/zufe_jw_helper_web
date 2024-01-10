@@ -13,6 +13,9 @@ export const useUserStore = defineStore('user', () => {
   const route = useRoute();
   const $q = useQuasar();
   const auth_ing = ref(false);
+  const semesterKeyStatus = ref(0); // 0:loading, 1:error, 2:ok
+  const semesterKey = ref('');
+  const needRefresh = ref(false);
 
   function login(form: user.LoginForm) {
     return new Promise<user.UserInfo>((resolve, reject) => {
@@ -87,5 +90,8 @@ export const useUserStore = defineStore('user', () => {
     register,
     logout,
     auth_ing,
+    semesterKey,
+    semesterKeyStatus,
+    needRefresh,
   };
 });

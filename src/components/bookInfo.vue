@@ -71,6 +71,7 @@ import { onMounted, Ref, ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import BookPay from 'components/BookProcess/BookPay.vue';
 import BookTake from 'components/BookProcess/bookTake.vue';
+import { useUserStore } from '@/stores/user';
 
 const props = defineProps<{
   semesterKey: string;
@@ -80,6 +81,7 @@ defineExpose({
 });
 
 const user_data = ref({});
+const user = useUserStore();
 const loading = ref(true);
 const err_msg = ref('');
 const $q = useQuasar();
@@ -120,4 +122,14 @@ function getBookInfo() {
 onMounted(() => {
   getBookInfo();
 });
+
+watch(
+  () => user.needRefresh,
+  (val, preVal) => {
+    if (val === true) {
+      user.needRefresh = false;
+      getBookInfo();
+    }
+  }
+);
 </script>

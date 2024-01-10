@@ -1,22 +1,28 @@
 <template>
-  <!--
-	<toolbar-add-btn
-		v-if="user.permission.Event.canWrite || user.permission.Blog.canWrite"
-	></toolbar-add-btn>-->
+  <switch-semester class="q-my-sm"></switch-semester>
 
+  <q-btn
+    flat
+    outline
+    round
+    color="primary"
+    icon="refresh"
+    @click="user.needRefresh = true"
+  />
   <switch-theme-btn></switch-theme-btn>
 
   <account-btn></account-btn>
 </template>
 
 <script setup lang="ts">
-// import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/stores/user';
 import { useQuasar } from 'quasar';
 import AccountBtn from 'components/btn/AccountBtn.vue';
 import SwitchThemeBtn from 'components/btn/SwitchThemeBtn.vue';
+import SwitchSemester from './switchSemester.vue';
 // import ToolbarAddBtn from "./btn/ToolbarAddBtn.vue";
 
-// const user = useUserStore();
+const user = useUserStore();
 let fullscreen = false;
 const $q = useQuasar();
 
