@@ -36,6 +36,7 @@
                   v-model="fileModel"
                   label="上传领书照片"
                   accept=".jpg, image/*"
+                  :disable="submiting"
                 >
                   <template v-slot:prepend>
                     <q-icon name="attach_file" />
@@ -56,6 +57,7 @@
                       dense
                       flat
                       icon="send"
+                      :loading="submiting"
                       @click="submitTake()"
                     >
                     </q-btn>
@@ -176,24 +178,6 @@ function init() {
 }
 
 var fileBase64 = '';
-// const readCodeFromFile = async () => {
-//   var promise = new Promise((reslove) => {
-//     var reader = new FileReader();
-//     // result 属性中将包含一个字符串以表示所读取的文件内容。
-//     reader.readAsArrayBuffer(fileModel.value);
-//     reader.onload = function () {
-//       reslove(this.result);
-//     };
-//   });
-//   await promise.then((res) => {
-//     fileBase64 = window.btoa(String.fromCharCode(...new Uint8Array(res)));
-//
-//
-//     // var gzipUI8A =  pako.deflate(new Uint8Array(res))
-//     // fileBase64 = window.btoa(String.fromCharCode(...gzipUI8A));
-//
-//   });
-// };
 
 async function readAndCompress() {
   var promise = new Promise(async (reslove) => {
@@ -219,15 +203,16 @@ function transformUint8ArrayToBase64(array) {
 }
 
 async function submitTake() {
+  submiting.value = true;
   if (fileModel.value === null) {
     $q.notify({
       type: 'negative',
       message: '请选择图片',
       progress: true,
     });
+    submiting.value = false;
     return;
   }
-  submiting.value = true;
   fileBase64 = '';
   await readAndCompress();
 
@@ -237,6 +222,7 @@ async function submitTake() {
       message: '读取文件出现问题',
       progress: true,
     });
+    submiting.value = false;
     return;
   }
   // console.log(fileBase64)
@@ -253,6 +239,7 @@ async function submitTake() {
       message: '您未选书，无需提交',
       progress: true,
     });
+    submiting.value = false;
     return;
   }
   submitData.value.semesterKey = props.semesterKey;
