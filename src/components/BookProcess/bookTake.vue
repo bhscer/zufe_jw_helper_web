@@ -80,7 +80,9 @@
 
       <q-expansion-item expand-separator icon="history" label="已拿记录">
         <q-card>
-          <take-record-card :records="dt.tookList"></take-record-card>
+          <q-card-section>
+            <take-record-card :records="dt.tookList"></take-record-card>
+          </q-card-section>
         </q-card>
       </q-expansion-item>
     </q-list>
@@ -94,7 +96,6 @@ import TakeRecordCard from 'components/BookProcess/takeRecordCard.vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 import ImagesQuicklyCompress from 'images-quickly-compress';
-import pako from 'pako';
 interface BookDetailNoPrice {
   className: string;
   bookName: string;
@@ -102,18 +103,19 @@ interface BookDetailNoPrice {
 interface TakeRecord {
   takeTime: number;
   takeList: BookDetailNoPrice[];
-  takePhoto: string;
+  imgId: string;
   approved: boolean;
 }
 const fileModel = ref(null);
 const isSubmitMode = ref(true);
 const $q = useQuasar();
 let imageCompress = new ImagesQuicklyCompress({
-  mode: 'pixel', //根据像素总大小压缩
-  num: 2e6, //压缩后图片的总像素都是100万（相当于1000px * 1000px的图片）
-  size: '500kb', //图片大小超过500kb执行压缩
-  imageType: 'image/jpeg', //jpeg压缩效果十分理想
+  mode: 'width', //根据固定宽度压缩
+  num: 800, //压缩后所有图片的宽度都是800px
+  size: 800, //图片大小超过800k压缩率比较低b执行压缩
+  imageType: 'image/jpeg',
   quality: 0.8,
+  orientation: true,
 });
 interface BookInfo_Take {
   status: number;
@@ -178,21 +180,24 @@ function init() {
 }
 
 var fileBase64 = '';
+var fileRaw: ArrayBuffer;
 
-async function readAndCompress() {
-  var promise = new Promise(async (reslove) => {
-    await imageCompress.compressor([fileModel.value]).then((res) => {
+function promiseRead() {
+  return new Promise(async (reslove) => {
+    imageCompress.compressor([fileModel.value]).then((res) => {
       var blod = res[0];
       var reader = new FileReader();
       reader.readAsArrayBuffer(blod);
       reader.onload = function () {
-        reslove(reader.result);
+        fileRaw = reader.result;
+        reslove('ok');
       };
     });
   });
-  await promise.then((res) => {
-    fileBase64 = transformUint8ArrayToBase64(new Uint8Array(res));
-  });
+}
+async function readAndCompress() {
+  await promiseRead();
+  fileBase64 = transformUint8ArrayToBase64(new Uint8Array(fileRaw));
 }
 function transformUint8ArrayToBase64(array) {
   var binary = '';

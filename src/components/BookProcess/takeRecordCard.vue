@@ -11,7 +11,7 @@ interface BookDetailNoPrice {
 interface TakeRecord {
   takeTime: number;
   takeList: BookDetailNoPrice[];
-  takePhoto: string;
+  imgId: string;
   approved: boolean;
 }
 defineProps<{
@@ -41,7 +41,8 @@ function shortTxt(txt: string) {
 </script>
 
 <template>
-  <q-list bordered class="rounded-borders">
+  <div v-if="records.length === 0">没有领书记录哦~</div>
+  <q-list bordered class="rounded-borders" v-else>
     <q-expansion-item
       :header-inset-level="1"
       :content-inset-level="1"
@@ -77,7 +78,7 @@ function shortTxt(txt: string) {
       </template>
       <q-card>
         <q-card-section>
-          <q-img :src="`${$api_url}book/take/img/${record.takePhoto}`" v-viewer>
+          <q-img :src="`${$api_url}book/take/img/${record.imgId}`" v-viewer>
             <template v-slot:error>
               <div
                 class="absolute-full flex flex-center bg-negative text-white"
