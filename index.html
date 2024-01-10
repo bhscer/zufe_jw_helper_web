@@ -38,13 +38,29 @@
     />
     <link rel="icon" type="image/ico" href="favicon.ico" />
     <style type="text/css">
+      /* Light mode */
+      @media (prefers-color-scheme: light) {
+        .first-loading-wrp {
+          background-color: white;
+        }
+      }
+
+      /* Dark mode */
+      @media (prefers-color-scheme: dark) {
+        .first-loading-wrp {
+          background-color: black;
+        }
+      }
+
       .first-loading-wrp {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 90vh;
-        min-height: 90vh;
+        /* height: 90vh; */
+        height: 100vh;
+        width: 100vh;
+        /* min-height: 90vh; */
       }
 
       .first-loading-wrp > h1 {
