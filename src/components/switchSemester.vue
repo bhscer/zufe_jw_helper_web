@@ -1,6 +1,5 @@
 <template>
   <div v-if="loadingSemester">
-    <q-spinner-gears size="40px" color="primary" />
     <p>正在获取学期信息</p>
   </div>
   <div v-else>
@@ -12,7 +11,7 @@
       <div style="display: flex; flex-direction: row">
         <q-select
           dense
-          class="q-my-sm"
+          class="q-my-none"
           outlined
           v-model="semesterKey"
           :options="semesterData.semesterList"

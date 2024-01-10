@@ -2,9 +2,24 @@
   <q-layout view="lHh Lpr lFf">
     <q-header reveal class="bg-header-auto">
       <q-toolbar class="text-primary">
-        <q-toolbar-title> 教务助手 </q-toolbar-title>
+        <q-toolbar-title> 选书系统 </q-toolbar-title>
         <toolbar-btn-group></toolbar-btn-group>
       </q-toolbar>
+      <q-separator />
+      <q-toolbar>
+        <q-space></q-space>
+        <switch-semester class="q-my-sm"></switch-semester>
+
+        <q-btn
+          flat
+          outline
+          round
+          color="primary"
+          icon="refresh"
+          @click="user.needRefresh = true"
+        />
+      </q-toolbar>
+      <q-separator />
     </q-header>
 
     <q-page-container>
@@ -25,7 +40,11 @@
 </template>
 
 <script lang="ts" setup>
+import { defineComponent, onMounted, ref } from 'vue';
 import ToolbarBtnGroup from 'components/ToolbarBtnGroup.vue';
+import switchSemester from '@/components/switchSemester.vue';
+import { useUserStore } from '@/stores/user';
 
+const user = useUserStore();
 document.querySelector('.first-loading-wrp')?.remove();
 </script>

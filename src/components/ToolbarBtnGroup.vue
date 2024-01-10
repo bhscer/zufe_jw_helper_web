@@ -1,14 +1,4 @@
 <template>
-  <switch-semester class="q-my-sm"></switch-semester>
-
-  <q-btn
-    flat
-    outline
-    round
-    color="primary"
-    icon="refresh"
-    @click="user.needRefresh = true"
-  />
   <switch-theme-btn></switch-theme-btn>
 
   <account-btn></account-btn>

@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/book',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/BookLayout.vue'),
     children: [
       {
         path: '',
