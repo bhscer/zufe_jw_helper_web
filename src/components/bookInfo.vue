@@ -32,7 +32,7 @@
                 getBookInfo();
               }
             "
-            :semester-key="semesterKey"
+            :semester-key="user.semesterKey"
           ></book-edit>
         </q-step>
         <q-step
@@ -41,7 +41,7 @@
           icon="attach_money"
           :done="user_data.curType > 1"
         >
-          <book-pay :dt="user_data" :semester-key="semesterKey"></book-pay>
+          <book-pay :dt="user_data" :semester-key="user.semesterKey"></book-pay>
         </q-step>
         <q-step
           :name="2"
@@ -51,7 +51,7 @@
         >
           <book-take
             :dt="user_data"
-            :semester-key="semesterKey"
+            :semester-key="user.semesterKey"
             :refresh-info-fun="
               () => {
                 getBookInfo();
@@ -73,9 +73,6 @@ import BookPay from 'components/BookProcess/BookPay.vue';
 import BookTake from 'components/BookProcess/bookTake.vue';
 import { useUserStore } from '@/stores/user';
 
-const props = defineProps<{
-  semesterKey: string;
-}>();
 defineExpose({
   getBookInfo,
 });
@@ -90,7 +87,7 @@ function getBookInfo() {
   err_msg.value = '';
   api({
     method: 'post',
-    url: `/book/info/${props.semesterKey}`,
+    url: `/book/info/${user.semesterKey}`,
   })
     .then((data) => {
       user_data.value = data.data;

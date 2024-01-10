@@ -1,7 +1,7 @@
 <template>
   <div v-if="user.semesterKeyStatus === 0" class="q-pa-md">
     <q-inner-loading
-      :showing="loadingSemester"
+      :showing="user.semesterKeyStatus === 0"
       style="background-color: transparent"
     >
       <q-spinner-gears size="40px" color="primary" />
@@ -12,52 +12,23 @@
     <!-- userinfo || error msg -->
     <div v-if="user.semesterKeyStatus === 1">
       <div class="text-h5">获取学期列表出现错误</div>
-      <p>{{ err_msg }}</p>
     </div>
     <div v-else class="q-pa-md">
       <div>
-        <book-info :semester-key="semesterKey" ref="bookInfoRef"></book-info>
+        <book-info></book-info>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { getCurrentInstance, onMounted, Ref, ref, watch } from 'vue';
-import { api } from 'boot/axios';
-import { useRoute, useRouter } from 'vue-router';
-import { useQuasar } from 'quasar';
-import { useUserStore } from '../stores/user';
-import JwcLogin from './jwcLogin.vue';
-import BookEdit from 'components/BookProcess/bookEdit.vue';
+import { useUserStore } from '@/stores/user';
 import BookInfo from 'components/bookInfo.vue';
 
+const user = useUserStore();
 const props = defineProps<{
   get_stu_info: any;
   set_stu_info: any;
 }>();
-const user = useUserStore();
-const this_route = useRoute();
-const this_router = useRouter();
-const $q = useQuasar();
-const err_msg = ref('');
-const semesterKey = ref('');
-
-const bookInfoRef = ref();
-
-watch(
-  () => user.semesterKey,
-  (val, preVal) => {
-    semesterKey.value = val;
-    if (user.semesterKeyStatus === 2) {
-      console.log(bookInfoRef.value);
-      if (bookInfoRef.value !== undefined) {
-        bookInfoRef.value.$nextTick(() => {
-          bookInfoRef.value.getBookInfo();
-        });
-      }
-    }
-  }
-);
 </script>
 <style>
 p {
