@@ -9,56 +9,59 @@
       >
         <q-card>
           <q-card-section>
-            <q-checkbox label="我要领书" v-model="isSubmitMode"></q-checkbox>
-            <q-markup-table>
-              <thead>
-                <tr>
-                  <th v-if="isSubmitMode"></th>
-                  <th class="text-left">课程名</th>
-                  <th class="text-left">书名</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in needTakeList" :key="item">
-                  <td v-if="isSubmitMode">
-                    <q-checkbox v-model="takeBookDict[item.bookName]" />
-                  </td>
-                  <td class="text-left">{{ item.className }}</td>
-                  <td class="text-left">{{ item.bookName }}</td>
-                </tr>
-              </tbody>
-            </q-markup-table>
-            <div class="q-mt-md" v-if="isSubmitMode">
-              <q-file
-                outlined
-                v-model="fileModel"
-                label="上传领书照片"
-                accept=".jpg, image/*"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="attach_file" />
-                </template>
+            <div v-if="needTakeList.length === 0">要领的书已经领完啦~</div>
+            <div v-else>
+              <q-checkbox label="我要领书" v-model="isSubmitMode"></q-checkbox>
+              <q-markup-table>
+                <thead>
+                  <tr>
+                    <th v-if="isSubmitMode"></th>
+                    <th class="text-left">课程名</th>
+                    <th class="text-left">书名</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in needTakeList" :key="item">
+                    <td v-if="isSubmitMode">
+                      <q-checkbox v-model="takeBookDict[item.bookName]" />
+                    </td>
+                    <td class="text-left">{{ item.className }}</td>
+                    <td class="text-left">{{ item.bookName }}</td>
+                  </tr>
+                </tbody>
+              </q-markup-table>
+              <div class="q-mt-md" v-if="isSubmitMode">
+                <q-file
+                  outlined
+                  v-model="fileModel"
+                  label="上传领书照片"
+                  accept=".jpg, image/*"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="attach_file" />
+                  </template>
 
-                <template v-slot:append>
-                  <q-icon
-                    v-if="fileModel !== null"
-                    name="close"
-                    @click.stop.prevent="fileModel = null"
-                    class="cursor-pointer"
-                  />
-                </template>
-                <template v-slot:after>
-                  <q-btn
-                    v-if="fileModel !== null"
-                    round
-                    dense
-                    flat
-                    icon="send"
-                    @click="submitTake()"
-                  >
-                  </q-btn>
-                </template>
-              </q-file>
+                  <template v-slot:append>
+                    <q-icon
+                      v-if="fileModel !== null"
+                      name="close"
+                      @click.stop.prevent="fileModel = null"
+                      class="cursor-pointer"
+                    />
+                  </template>
+                  <template v-slot:after>
+                    <q-btn
+                      v-if="fileModel !== null"
+                      round
+                      dense
+                      flat
+                      icon="send"
+                      @click="submitTake()"
+                    >
+                    </q-btn>
+                  </template>
+                </q-file>
+              </div>
             </div>
           </q-card-section>
         </q-card>
@@ -128,7 +131,7 @@ const props = defineProps<{
 
 interface takeSubmit {
   semesterKey: string;
-  takeList: string[];
+  takeList: BookDetailNoPrice[];
   photoBase64: string;
 }
 const submitData: Ref<takeSubmit> = ref({
@@ -239,9 +242,18 @@ async function submitTake() {
   // console.log(fileBase64)
 
   submitData.value.takeList = [];
-  for (const [key, value] of Object.entries(takeBookDict.value)) {
-    if (value === false) continue;
-    submitData.value.takeList.push(key);
+  needTakeList.value.forEach((bookinfo, idx) => {
+    if (takeBookDict.value[bookinfo.bookName] === true) {
+      submitData.value.takeList.push(bookinfo);
+    }
+  });
+  if (submitData.value.takeList.length === 0) {
+    $q.notify({
+      type: 'negative',
+      message: '您未选书，无需提交',
+      progress: true,
+    });
+    return;
   }
   submitData.value.semesterKey = props.semesterKey;
   submitData.value.photoBase64 = fileBase64;

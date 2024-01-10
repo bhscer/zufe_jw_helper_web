@@ -49,10 +49,6 @@ function shortTxt(txt: string) {
       :key="record"
       expand-separator
       icon="perm_identity"
-      :label="`${shortTxt(record.takeList[0].bookName)}等${
-        record.takeList.length
-      }本`"
-      :caption="TimestampToDate(record.takeTime)"
     >
       <template v-slot:header>
         <q-item-section avatar>
@@ -68,12 +64,15 @@ function shortTxt(txt: string) {
             }}
           </div>
           <div>
-            <q-icon name="schedule" />{{ TimestampToDate(record.takeTime) }}
+            <q-icon name="schedule" />{{
+              TimestampToDate(record.takeTime * 1000)
+            }}
           </div>
         </q-item-section>
 
         <q-item-section side>
-          <div>{{ record.approved ? '已审批' : '未审批' }}</div>
+          <div v-if="record.approved">已审批</div>
+          <div v-else class="text-red">未审批</div>
         </q-item-section>
       </template>
       <q-card>
