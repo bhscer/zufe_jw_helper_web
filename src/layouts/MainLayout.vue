@@ -27,5 +27,5 @@
 <script lang="ts" setup>
 import ToolbarBtnGroup from 'components/ToolbarBtnGroup.vue';
 
-document.querySelector('.first-loading-wrp')?.remove();
+document.querySelector('#loading-state')?.remove();
 </script>

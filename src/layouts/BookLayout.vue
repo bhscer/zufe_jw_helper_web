@@ -156,5 +156,5 @@ function initAdminSelection() {
 }
 
 initAdminSelection();
-document.querySelector('.first-loading-wrp')?.remove();
+document.querySelector('#loading-state')?.remove();
 </script>

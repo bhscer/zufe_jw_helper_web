@@ -37,130 +37,79 @@
       href="icons/favicon-16x16.png"
     />
     <link rel="icon" type="image/ico" href="favicon.ico" />
-    <style type="text/css">
-      /* Light mode */
-      @media (prefers-color-scheme: light) {
-        .first-loading-wrp {
-          background-color: white;
-        }
-      }
-
-      /* Dark mode */
-      @media (prefers-color-scheme: dark) {
-        .first-loading-wrp {
-          background-color: black;
-        }
-      }
-
-      .first-loading-wrp {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        /* height: 90vh; */
-        height: 100vh;
-        width: 100%;
-        /* min-height: 90vh; */
-      }
-
-      .first-loading-wrp > h1 {
-        font-size: 30px;
-        font-weight: bolder;
-      }
-
-      .first-loading-wrp .loading-wrp {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 98px;
-      }
-
-      .dot {
-        position: relative;
-        box-sizing: border-box;
-        display: inline-block;
-        width: 64px;
-        height: 64px;
-        font-size: 64px;
-        transform: rotate(45deg);
-        animation: antRotate 1.2s infinite linear;
-      }
-
-      .dot i {
-        position: absolute;
-        display: block;
-        width: 28px;
-        height: 28px;
-        background-color: #1890ff;
-        border-radius: 100%;
-        opacity: 0.3;
-        transform: scale(0.75);
-        transform-origin: 50% 50%;
-        animation: antSpinMove 1s infinite linear alternate;
-      }
-
-      .dot i:nth-child(1) {
-        top: 0;
-        left: 0;
-      }
-
-      .dot i:nth-child(2) {
-        top: 0;
-        right: 0;
-        -webkit-animation-delay: 0.4s;
-        animation-delay: 0.4s;
-      }
-
-      .dot i:nth-child(3) {
-        right: 0;
-        bottom: 0;
-        -webkit-animation-delay: 0.8s;
-        animation-delay: 0.8s;
-      }
-
-      .dot i:nth-child(4) {
-        bottom: 0;
-        left: 0;
-        -webkit-animation-delay: 1.2s;
-        animation-delay: 1.2s;
-      }
-
-      @keyframes antRotate {
-        to {
-          -webkit-transform: rotate(405deg);
-          transform: rotate(405deg);
-        }
-      }
-
-      @-webkit-keyframes antRotate {
-        to {
-          -webkit-transform: rotate(405deg);
-          transform: rotate(405deg);
-        }
-      }
-
-      @keyframes antSpinMove {
-        to {
-          opacity: 1;
-        }
-      }
-
-      @-webkit-keyframes antSpinMove {
-        to {
-          opacity: 1;
-        }
-      }
-    </style>
   </head>
   <body>
-    <div class="first-loading-wrp">
-      <div class="loading-wrp">
-        <span class="dot dot-spin">
-          <i></i>
-          <i></i>
-          <i></i>
-          <i></i>
-        </span>
+    <div id="loading-state" role="alert" aria-live="assertive">
+      <div class="message">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          id="Layer_1"
+          x="0"
+          y="0"
+          version="1.1"
+          viewBox="0 0 1024 1024"
+          xml:space="preserve"
+        >
+          <style>
+            .st0 {
+              fill: #050a14;
+            }
+
+            .st1 {
+              fill: #00b4ff;
+            }
+          </style>
+          <path
+            id="path8860-5-4-8-2-7-1-8_20_"
+            d="M586.2 512a74.2 74.2 0 11-148.4 0 74.2 74.2 0 11148.4 0z"
+            class="st0"
+          />
+          <path
+            id="path8862-5-5-9-1-9-2-7_20_"
+            d="M841.3 321.8a375.7 375.7 0 00-58.3-76.2l-85.8 49.5a286.7 286.7 0 00-89.5-51.9 352 352 0 00-69.3 98.9c95.5-6.5 194.1 28.1 285.6 99.6l54-31.2a377.5 377.5 0 00-36.7-88.7z"
+            class="st0"
+          />
+          <path
+            id="path8866-7-5-5-0-3-5-6_20_"
+            d="M512 892.2c32.1-.1 64.1-4.3 95.1-12.4v-99a285 285 0 0089.7-51.6 352.3 352.3 0 00-51-109.5c-42.1 85.9-121.3 154-229 197.5v62.3a369.4 369.4 0 0095.2 12.7z"
+            class="st0"
+          />
+          <path
+            id="path8870-5-3-9-3-0-0-9_20_"
+            d="M182.7 321.9a377.8 377.8 0 00-36.8 88.6l85.8 49.5a285.8 285.8 0 00-.2 103.5 352.7 352.7 0 00120.3 10.6C298.4 494.7 279.1 392 295.2 277l-54-31.2a376.9 376.9 0 00-58.5 76.1z"
+            class="st0"
+          />
+          <g>
+            <path
+              id="path8864-4-8-1-2-7-3-1_20_"
+              d="M841.3 702.1c16-27.8 28.3-57.6 36.8-88.6L792.4 564c6.4-34.6 6.4-69.6.2-103.5a352.7 352.7 0 00-120.3-10.6C725.7 529.3 745 632 728.9 747l54 31.2a382 382 0 0058.4-76.1z"
+              class="st1"
+            />
+            <path
+              id="path8868-6-7-4-7-5-7-1_20_"
+              d="M182.7 702.1a375.7 375.7 0 0058.3 76.2l85.8-49.5a286.7 286.7 0 0089.5 51.9 352 352 0 0069.3-98.9c-95.5 6.5-194.1-28.1-285.6-99.6l-54 31.2c8.5 31 20.8 60.8 36.7 88.7z"
+              class="st1"
+            />
+            <path
+              id="path8872-6-3-2-1-4-2-1_20_"
+              d="M512 131.7c-32.1.1-64.1 4.3-95.1 12.4v99a285 285 0 00-89.7 51.6 352.3 352.3 0 0051 109.5c42.1-85.9 121.3-154 229-197.5v-62.3a378.3 378.3 0 00-95.2-12.7z"
+              class="st1"
+            />
+          </g>
+          <path
+            d="M512 66.4c245.7 0 445.6 199.9 445.6 445.6S757.7 957.6 512 957.6 66.4 757.7 66.4 512 266.3 66.4 512 66.4M512 1a511 511 0 100 1022A511 511 0 00512 1z"
+            class="st1"
+          />
+        </svg>
+        <h1>教务助手正在加载。</h1>
+        <div class="content">
+          <div class="spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- quasar:entry-point -->
@@ -174,3 +123,147 @@
   </script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
 </html>
+
+<style id="loading-styles" type="text/css">
+  /* * {
+          box-sizing: border-box;
+        }
+
+        html {
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-size-adjust: none;
+        }
+
+        body,
+        html,
+        ul,
+        ol,
+        li,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          margin: 0;
+          padding: 0;
+        }
+   */
+  body {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI',
+      Roboto, Oxygen, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  #loading-state {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* Prevent massive cumulative layout shift when hiding/removing loading state*/
+    position: absolute;
+    top: 0;
+    background: #fff;
+    opacity: 1;
+    z-index: 9999;
+    transition: opacity 0.1s ease-out;
+  }
+
+  #loading-state.hide {
+    opacity: 0;
+  }
+
+  .dark-mode #loading-state {
+    background: #1d1d1d;
+  }
+
+  .message {
+    line-height: 1.5;
+    font-size: 20px;
+    padding: 32px;
+    max-width: 664px;
+    width: 100%;
+  }
+
+  .dark-mode body {
+    background-color: #1d1d1d;
+    color: #d9d9d9;
+  }
+
+  .message h1 {
+    line-height: 1.5;
+    font-size: inherit;
+    font-weight: 600;
+    margin: 0 auto 16px;
+  }
+
+  .message .content {
+    margin: 0;
+    max-width: 37.5rem;
+    display: flex;
+    min-height: calc(3em * 1.5);
+    /* 3 lines of text * 1.5 line-height */
+  }
+
+  .message svg {
+    width: 128px;
+    margin-bottom: 16px;
+  }
+
+  .spinner {
+    padding-left: 16px;
+    padding-top: 16px;
+    width: 32px;
+    height: 32px;
+    margin-top: -16px;
+    margin-left: -16px;
+  }
+
+  .spinner div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 100%;
+    animation: spinner 2.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #92979b transparent transparent transparent;
+  }
+
+  .spinner div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+
+  .spinner div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  .spinner div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    .spinner {
+      display: none;
+    }
+
+    .spinner div {
+      animation: none;
+    }
+  }
+</style>
