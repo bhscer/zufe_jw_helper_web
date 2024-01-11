@@ -12,27 +12,11 @@ interface TakeRecord {
   takeTime: number;
   takeList: BookDetailNoPrice[];
   imgId: string;
-  approved: boolean;
+  approvedCode: number;
 }
 defineProps<{
   records: TakeRecord[];
 }>();
-
-function TimestampToDate(Timestamp: number) {
-  let now = new Date(Timestamp),
-    y = now.getFullYear(),
-    m = now.getMonth() + 1,
-    d = now.getDate();
-  return (
-    y +
-    '-' +
-    (m < 10 ? '0' + m : m) +
-    '-' +
-    (d < 10 ? '0' + d : d) +
-    ' ' +
-    now.toTimeString().substr(0, 8)
-  );
-}
 
 function shortTxt(txt: string) {
   if (txt.length <= 12) return txt;
@@ -65,15 +49,16 @@ function shortTxt(txt: string) {
             }}
           </div>
           <div>
-            <q-icon name="schedule" />{{
-              TimestampToDate(record.takeTime * 1000)
-            }}
+            <q-icon name="schedule" />{{ $TimestampToDate(record.takeTime) }}
           </div>
         </q-item-section>
 
         <q-item-section side>
-          <div v-if="record.approved">已审批</div>
-          <div v-else class="text-red">未审批</div>
+          <div v-if="record.approvedCode === 0">待审批</div>
+          <div v-else-if="record.approvedCode === 1" class="text-green">
+            已通过
+          </div>
+          <div v-else class="text-red">未通过</div>
         </q-item-section>
       </template>
       <q-card>

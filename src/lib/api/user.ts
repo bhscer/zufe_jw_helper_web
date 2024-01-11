@@ -8,7 +8,7 @@ export namespace user {
     token: string;
     stuname: string;
     className: string;
-    adminList: string[];
+    adminDict: { [key: string]: string[] };
   }
 
   const base = (key: string) => {

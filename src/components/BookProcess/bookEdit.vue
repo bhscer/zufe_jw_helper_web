@@ -16,7 +16,7 @@
                   请勾选需要订书的科目（实际不一定有书）
                 </div>
                 <p v-if="lastSelect !== -1">
-                  {{ `上次选书:${TimestampToDate(lastSelect * 1000)}` }}
+                  {{ `上次选书:${$TimestampToDate(lastSelect)}` }}
                 </p>
                 <p v-if="dt.selectableList.length === 0">无所需订书</p>
                 <q-option-group
@@ -223,21 +223,6 @@ const submitData: Ref<BookInfo_Edit_Submit> = ref({
   selectedList: props.dt.selectedList,
 });
 
-function TimestampToDate(Timestamp: number) {
-  let now = new Date(Timestamp),
-    y = now.getFullYear(),
-    m = now.getMonth() + 1,
-    d = now.getDate();
-  return (
-    y +
-    '-' +
-    (m < 10 ? '0' + m : m) +
-    '-' +
-    (d < 10 ? '0' + d : d) +
-    ' ' +
-    now.toTimeString().substr(0, 8)
-  );
-}
 function submitList() {
   submiting.value = true;
   api({

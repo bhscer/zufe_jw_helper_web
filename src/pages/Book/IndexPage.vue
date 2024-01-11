@@ -4,18 +4,14 @@
     style="flex-direction: column; flex-wrap: wrap"
   >
     <div class="q-mx-sm">
-      <book-page
-        :get_stu_info="getStuInfo"
-        :set_stu_info="setStuInfo"
-      ></book-page>
+      <book-info></book-info>
     </div>
   </q-page>
 </template>
 
 <script lang="ts" setup>
-import bookPage from 'src/components/bookPage.vue';
 import { defineComponent, ref, watch } from 'vue';
-import BookPage from 'components/bookPage.vue';
+import bookInfo from '@/components/bookInfo.vue';
 const step = ref(1);
 const can_go_next = ref(true);
 const stu_info = ref({});

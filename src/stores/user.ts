@@ -15,6 +15,7 @@ export const useUserStore = defineStore('user', () => {
   const auth_ing = ref(false);
   const semesterKeyStatus = ref(0); // 0:loading, 1:error, 2:ok
   const semesterKey = ref('');
+  const adminSelectClass = ref('');
   const needRefresh = ref(false);
 
   function login(form: user.LoginForm) {
@@ -60,6 +61,7 @@ export const useUserStore = defineStore('user', () => {
       .then((d) => {
         info.value = d.data;
         localStorage.setItem('jw-auth-token', d.data.token);
+        needRefresh.value = true;
         auth_ing.value = false;
       })
       .catch((error) => {
@@ -93,5 +95,6 @@ export const useUserStore = defineStore('user', () => {
     semesterKey,
     semesterKeyStatus,
     needRefresh,
+    adminSelectClass,
   };
 });

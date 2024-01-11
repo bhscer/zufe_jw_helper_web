@@ -30,6 +30,10 @@ const routes: RouteRecordRaw[] = [
         path: 'admin',
         // component: () => import('layouts/MainLayout.vue'),
         children: [
+          {
+            path: 'takeList',
+            component: () => import('pages/Book/Admin/takeListVerify.vue'),
+          },
           // {
           //   path: 'CreateOperation',
           //   component: () => import('pages/Book/Admin/CreateOperation.vue'),

@@ -1,10 +1,14 @@
 <template>
-  <q-card v-if="loading" class="q-pa-lg">
-    <q-inner-loading :showing="loading" style="background-color: transparent">
+  <div class="flex flex-center" v-if="loading">
+    <q-inner-loading
+      :showing="loading"
+      class="q-ma-sm"
+      style="background-color: transparent"
+    >
       <q-spinner-gears size="40px" color="primary" />
       <p>正在获取信息</p>
     </q-inner-loading>
-  </q-card>
+  </div>
 
   <div v-else>
     <div v-if="user_data.status === 0">

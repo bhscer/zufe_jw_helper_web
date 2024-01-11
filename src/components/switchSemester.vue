@@ -1,11 +1,11 @@
 <template>
   <div v-if="loadingSemester">
-    <p>正在获取学期信息</p>
+    <div class="text-primary">正在获取学期信息</div>
   </div>
   <div v-else>
     <div v-if="err_msg.length > 0">
-      <div class="text-h5">获取学期列表出现错误</div>
-      <p>{{ err_msg }}</p>
+      <div class="text-primary">获取学期列表出现错误</div>
+      <!-- <p>{{ err_msg }}</p> -->
     </div>
     <div v-else>
       <div style="display: flex; flex-direction: row">
@@ -97,6 +97,7 @@ watch(
   () => semesterKey.value,
   (val, preVal) => {
     user.semesterKey = val;
+    user.needRefresh = true;
   }
 );
 </script>
