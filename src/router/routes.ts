@@ -31,8 +31,12 @@ const routes: RouteRecordRaw[] = [
         // component: () => import('layouts/MainLayout.vue'),
         children: [
           {
-            path: 'takeList',
+            path: 'take/list',
             component: () => import('pages/Book/Admin/takeListVerify.vue'),
+          },
+          {
+            path: 'history/list',
+            component: () => import('pages/Book/Admin/bookHistoryList.vue'),
           },
           // {
           //   path: 'CreateOperation',

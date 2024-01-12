@@ -117,10 +117,16 @@ const linksList = [
     link: '/book',
   },
   {
+    title: '购书列表',
+    caption: '',
+    icon: 'code',
+    link: '/book/admin/history/list',
+  },
+  {
     title: '领书列表',
     caption: '',
     icon: 'code',
-    link: '/book/admin/takeList',
+    link: '/book/admin/take/list',
   },
 ];
 const leftDrawerOpen = ref(false);

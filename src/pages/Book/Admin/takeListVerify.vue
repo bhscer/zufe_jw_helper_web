@@ -1,46 +1,66 @@
 <template>
-  <q-markup-table>
-    <thead>
-      <tr>
-        <th class="text-left" style="width: 5%">姓名</th>
-        <th class="text-left" style="width: 5%">时间</th>
-        <th class="text-left" style="width: 5%">状态</th>
-        <th class="text-left">书目</th>
-        <th class="text-center" style="width: 10%">操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, idx) in dt" :key="idx">
-        <td class="text-left">{{ item.stuName }}</td>
-        <td class="text-left">{{ $TimestampToDate(item.takeTime) }}</td>
-        <td class="text-left">
-          <div v-if="item.approvedCode === 0">待审批</div>
-          <div v-else-if="item.approvedCode === 1" class="text-green">
-            已通过
-          </div>
-          <div v-else class="text-red">未通过</div>
-        </td>
-        <td class="text-left">
-          {{
-            `${shortTxt(item.takeList[0].bookName)}等${item.takeList.length}本`
-          }}
-        </td>
-        <td class="text-center">
-          <q-btn
-            label="查看"
-            flat
-            outline
-            rounded
-            color="primary"
-            @click="
-              takeDeatilIdx = idx;
-              showTakeDetail = true;
-            "
-          ></q-btn>
-        </td>
-      </tr>
-    </tbody>
-  </q-markup-table>
+  <q-page class="flex flex-center" v-if="loading">
+    <q-inner-loading
+      :showing="loading"
+      class="q-ma-sm"
+      style="background-color: transparent"
+    >
+      <q-spinner-gears size="40px" color="primary" />
+      <p>正在获取信息</p>
+    </q-inner-loading>
+  </q-page>
+  <div v-else>
+    <q-page v-if="err_msg.length" class="flex flex-center">
+      <error-text :msg="err_msg"></error-text>
+    </q-page>
+    <q-page v-if="dt.length === 0" class="flex flex-center">
+      <error-text msg="没有记录哦~"></error-text>
+    </q-page>
+    <q-markup-table v-else>
+      <thead>
+        <tr>
+          <th class="text-left" style="width: 5%">姓名</th>
+          <th class="text-left" style="width: 5%">时间</th>
+          <th class="text-left" style="width: 5%">状态</th>
+          <th class="text-left">书目</th>
+          <th class="text-center" style="width: 10%">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, idx) in dt" :key="idx">
+          <td class="text-left">{{ item.stuName }}</td>
+          <td class="text-left">{{ $TimestampToDate(item.takeTime) }}</td>
+          <td class="text-left">
+            <div v-if="item.approvedCode === 0">待审批</div>
+            <div v-else-if="item.approvedCode === 1" class="text-green">
+              已通过
+            </div>
+            <div v-else class="text-red">未通过</div>
+          </td>
+          <td class="text-left">
+            {{
+              `${shortTxt(item.takeList[0].bookName)}等${
+                item.takeList.length
+              }本`
+            }}
+          </td>
+          <td class="text-center">
+            <q-btn
+              label="查看"
+              flat
+              outline
+              rounded
+              color="primary"
+              @click="
+                takeDeatilIdx = idx;
+                showTakeDetail = true;
+              "
+            ></q-btn>
+          </td>
+        </tr>
+      </tbody>
+    </q-markup-table>
+  </div>
 
   <q-dialog v-model="showTakeDetail">
     <q-card class="q-pa-lg">
@@ -105,6 +125,7 @@ import { useUserStore } from '@/stores/user';
 import { Ref, onMounted, ref, watch } from 'vue';
 import classAndBookTable from '@/components/BookProcess/classAndBookTable.vue';
 import { useQuasar } from 'quasar';
+import ErrorText from '@/components/errorText.vue';
 
 const $q = useQuasar();
 const user = useUserStore();
