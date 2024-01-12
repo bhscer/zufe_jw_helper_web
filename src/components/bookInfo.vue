@@ -87,6 +87,7 @@ const loading = ref(true);
 const err_msg = ref('');
 const $q = useQuasar();
 function getBookInfo() {
+  user.needRefresh = false;
   loading.value = true;
   err_msg.value = '';
   api({

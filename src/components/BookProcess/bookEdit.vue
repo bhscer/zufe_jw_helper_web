@@ -89,6 +89,14 @@
                     @click="showJwcForm = true"
                     class="q-mb-sm"
                   ></q-btn>
+
+                  <q-btn
+                    v-if="dt.status === 2"
+                    label="不同步了，我一本书都不买"
+                    :loading="submitingNothing"
+                    @click="submitNothing()"
+                    class="q-mb-sm"
+                  ></q-btn>
                 </div>
               </q-card-section>
             </q-card>
@@ -187,10 +195,11 @@ import { api } from 'boot/axios';
 import { onMounted, Ref, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import JwcLogin from 'components/jwcLogin.vue';
+import { useUserStore } from '@/stores/user';
 
 const submiting = ref(false);
 const $q = useQuasar();
-
+const user = useUserStore();
 const showJwcForm = ref(false);
 interface BookInfo_Edit {
   status: number;
@@ -213,7 +222,7 @@ const props = defineProps<{
 }>();
 
 const lastSelect = ref(props.dt.lastSelect);
-
+const submitingNothing = ref(false);
 interface BookInfo_Edit_Submit {
   semesterKey: string;
   selectedList: string[];
@@ -223,8 +232,46 @@ const submitData: Ref<BookInfo_Edit_Submit> = ref({
   selectedList: props.dt.selectedList,
 });
 
+function submitNothing() {
+  submitingNothing.value = true;
+
+  api({
+    method: 'post',
+    url: `/book/edit/nothing/${user.semesterKey}`,
+  })
+    .then((data) => {
+      submitingNothing.value = false;
+      user.needRefresh = true;
+      $q.notify({
+        type: 'positive',
+        message: '提交成功',
+        progress: true,
+      });
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      submitingNothing.value = false;
+      var err_msg_notify = '';
+      try {
+        if (error.response.status === 401 || error.response.status === 400)
+          err_msg_notify = error.response.data.detail;
+        else err_msg_notify = '错误码' + error.response.status;
+      } catch {
+        err_msg_notify = '错误码' + error.code;
+      }
+      if (err_msg_notify === '') err_msg_notify = '未知错误';
+      if (err_msg_notify !== '') {
+        $q.notify({
+          type: 'negative',
+          message: err_msg_notify,
+          progress: true,
+        });
+      }
+    });
+}
 function submitList() {
   submiting.value = true;
+  submitData.value.semesterKey = user.semesterKey;
   api({
     method: 'post',
     url: '/book/edit',
