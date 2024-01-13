@@ -38,6 +38,10 @@ const routes: RouteRecordRaw[] = [
             path: 'history/list',
             component: () => import('pages/Book/Admin/bookHistoryList.vue'),
           },
+          {
+            path: 'class/summary',
+            component: () => import('pages/Book/Admin/classSummary.vue'),
+          },
           // {
           //   path: 'CreateOperation',
           //   component: () => import('pages/Book/Admin/CreateOperation.vue'),

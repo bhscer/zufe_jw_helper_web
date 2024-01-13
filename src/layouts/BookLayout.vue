@@ -54,6 +54,7 @@
       show-if-above
       bordered
       v-if="isBookAdmin"
+      :width="180"
     >
       <q-list>
         <q-item-label header> 菜单 </q-item-label>
@@ -115,6 +116,12 @@ const linksList = [
     caption: '',
     icon: 'home',
     link: '/book',
+  },
+  {
+    title: '班级概览',
+    caption: '',
+    icon: 'code',
+    link: '/book/admin/class/summary',
   },
   {
     title: '购书列表',

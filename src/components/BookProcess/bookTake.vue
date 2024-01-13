@@ -115,7 +115,7 @@ let imageCompress = new ImagesQuicklyCompress({
   size: 800, //图片大小超过800k压缩率比较低b执行压缩
   imageType: 'image/jpeg',
   quality: 0.8,
-  orientation: true,
+  orientation: false,
 });
 interface BookInfo_Take {
   status: number;
