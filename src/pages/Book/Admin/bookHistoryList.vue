@@ -299,6 +299,9 @@ function initDetailFormValues(idx: number) {
   changeTmpMoney.value = 0;
 }
 
+function isSameList(arr1: string[], arr2: string[]) {
+  return arr1.length === arr2.length && arr1.every((v, i) => v === arr2[i]);
+}
 function submitEdit() {
   submiting.value = true;
   api({
@@ -307,6 +310,10 @@ function submitEdit() {
     data: {
       payAmount: bookHistoryTmp.value.payAmount,
       selectedList: bookHistoryTmp.value.selectedList,
+      newSelection: !isSameList(
+        bookHistoryTmp.value.selectedList,
+        dt.value[bookHistoryIdx.value].selectedList
+      ),
     },
   })
     .then((data) => {
@@ -315,6 +322,15 @@ function submitEdit() {
         message: '修改成功',
         progress: true,
       });
+
+      if (
+        !isSameList(
+          bookHistoryTmp.value.selectedList,
+          dt.value[bookHistoryIdx.value].selectedList
+        )
+      ) {
+        dt.value[bookHistoryIdx.value].lastSelect = new Date().getTime() / 1000;
+      }
       dt.value[bookHistoryIdx.value].payAmount = bookHistoryTmp.value.payAmount;
       dt.value[bookHistoryIdx.value].selectedList =
         bookHistoryTmp.value.selectedList;

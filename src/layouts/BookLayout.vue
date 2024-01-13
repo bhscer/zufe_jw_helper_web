@@ -124,16 +124,22 @@ const linksList = [
     link: '/book/admin/class/summary',
   },
   {
-    title: '购书列表',
+    title: '选书记录',
     caption: '',
     icon: 'code',
     link: '/book/admin/history/list',
   },
   {
-    title: '领书列表',
+    title: '领书记录',
     caption: '',
     icon: 'code',
     link: '/book/admin/take/list',
+  },
+  {
+    title: '书本信息',
+    caption: '',
+    icon: 'code',
+    link: '/book/admin/books/info',
   },
 ];
 const leftDrawerOpen = ref(false);

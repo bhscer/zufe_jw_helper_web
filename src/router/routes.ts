@@ -42,6 +42,10 @@ const routes: RouteRecordRaw[] = [
             path: 'class/summary',
             component: () => import('pages/Book/Admin/classSummary.vue'),
           },
+          {
+            path: 'books/info',
+            component: () => import('pages/Book/Admin/booksInfo.vue'),
+          },
           // {
           //   path: 'CreateOperation',
           //   component: () => import('pages/Book/Admin/CreateOperation.vue'),
