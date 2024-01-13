@@ -154,7 +154,7 @@
               </div>
               <q-btn
                 v-if="needChangeSelectList"
-                label="修改"
+                label="确认修改"
                 @click="
                   bookHistoryTmp.selectedList = changeSelectionSelected;
                   editAlert();
@@ -213,7 +213,7 @@
                       </div>
                     </div>
                     <q-btn
-                      label="修改"
+                      label="确认修改"
                       @click="
                         bookHistoryTmp.payAmount = changeTmpMoneyResult;
                         editAlert();
@@ -232,6 +232,8 @@
         </q-expansion-item>
       </q-list>
 
+      <q-separator />
+      <div>在提交修改前，请确认上方各项中点击过确认修改</div>
       <q-btn
         label="提交所有修改"
         @click="submitEdit()"
@@ -245,7 +247,6 @@
 import { api } from '@/boot/axios';
 import { useUserStore } from '@/stores/user';
 import { Ref, onMounted, ref, watch } from 'vue';
-import classAndBookTable from '@/components/BookProcess/classAndBookTable.vue';
 import { useQuasar } from 'quasar';
 import ErrorText from '@/components/errorText.vue';
 import _ from 'lodash';
@@ -304,8 +305,8 @@ function submitEdit() {
     method: 'post',
     url: `/admin/book/history/${user.semesterKey}/${bookHistoryTmp.value.stuId}/edit`,
     data: {
-      payAmount: changeTmpMoneyResult.value,
-      selectedList: changeSelectionSelected.value,
+      payAmount: bookHistoryTmp.value.payAmount,
+      selectedList: bookHistoryTmp.value.selectedList,
     },
   })
     .then((data) => {
@@ -314,9 +315,9 @@ function submitEdit() {
         message: '修改成功',
         progress: true,
       });
-      dt.value[bookHistoryIdx.value].payAmount = changeTmpMoneyResult.value;
+      dt.value[bookHistoryIdx.value].payAmount = bookHistoryTmp.value.payAmount;
       dt.value[bookHistoryIdx.value].selectedList =
-        changeSelectionSelected.value;
+        bookHistoryTmp.value.selectedList;
 
       submiting.value = false;
     })
