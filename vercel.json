@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "dist/spa",
   "routes": [
     {
       "handle": "filesystem"
