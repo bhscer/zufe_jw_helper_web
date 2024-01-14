@@ -37,18 +37,18 @@ print("=" * 20)
 
 print("")
 print("=" * 20)
-print("start file copy")
+# print("start file copy")
 
-disPath = "../public"
-if os.path.exists("../tmp_git"):
-    shutil.rmtree("../tmp_git")
+# disPath = "../public"
+# if os.path.exists("../tmp_git"):
+#     shutil.rmtree("../tmp_git")
 
-shutil.move(disPath + "/.git", "../tmp_git")
-shutil.rmtree(disPath)
-shutil.copytree(os.path.abspath("./dist/spa"), os.path.abspath(disPath))
-shutil.move("../tmp_git", disPath + "/.git")
+# shutil.move(disPath + "/.git", "../tmp_git")
+# shutil.rmtree(disPath)
+# shutil.copytree(os.path.abspath("./dist/spa"), os.path.abspath(disPath))
+# shutil.move("../tmp_git", disPath + "/.git")
 
-print("file copied")
-print("=" * 20)
-print("")
+# print("file copied")
+# print("=" * 20)
+# print("")
 print("all progress finished")

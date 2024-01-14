@@ -1,6 +1,7 @@
 <template>
   <div>
-    <q-markup-table>
+    <div v-if="dt.bookList.length === 0">没有需要付款的书目哦~</div>
+    <q-markup-table v-else>
       <thead>
         <tr>
           <th>课程名</th>
@@ -11,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in dt.selectedList" :key="item">
+        <tr v-for="item in dt.bookList" :key="item">
           <td>{{ item.className }}</td>
           <td>{{ item.bookName }}</td>
           <td>{{ item.price[0].toFixed(2) }}</td>
@@ -56,7 +57,7 @@ interface BookInfo_Pay {
   msg: string;
   curType: number;
 
-  selectedList: BookDetail[];
+  bookList: BookDetail[];
   payAmount: number;
 }
 
@@ -67,9 +68,9 @@ const props = defineProps<{
 const totalAmount = ref(0.0);
 
 onMounted(() => {
-  for (var i = 0; i < props.dt.selectedList.length; i++) {
-    totalAmount.value += props.dt.selectedList[i].price[0];
-    totalAmount.value += props.dt.selectedList[i].price[1];
+  for (var i = 0; i < props.dt.bookList.length; i++) {
+    totalAmount.value += props.dt.bookList[i].price[0];
+    totalAmount.value += props.dt.bookList[i].price[1];
   }
 });
 

@@ -122,7 +122,7 @@ interface BookInfo_Take {
   msg: string;
   curType: number;
 
-  selectedList: BookDetailNoPrice[];
+  bookList: BookDetailNoPrice[];
   unreadyList: BookDetailNoPrice[];
   tookList: TakeRecord[];
 }
@@ -166,7 +166,7 @@ function init() {
     unreadyTakeBookNameList.push(bookdt.bookName);
   });
 
-  props.dt.selectedList.forEach((bookdt, idx) => {
+  props.dt.bookList.forEach((bookdt, idx) => {
     // 未到
     if (unreadyTakeBookNameList.indexOf(bookdt.bookName) !== -1) {
       return;
