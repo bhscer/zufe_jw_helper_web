@@ -24,20 +24,6 @@
           @click="toggleLeftDrawer"
           color="primary"
         />
-        <q-select
-          v-if="isZCAdmin"
-          dense
-          class="q-my-none q-ml-sm"
-          outlined
-          v-model="selectedLink"
-          :options="adminFuncList"
-          option-value="link"
-          option-label="title"
-          option-disable="inactive"
-          map-options
-          emit-value
-          label="管理选项"
-        />
         <q-space></q-space>
 
         <q-select
@@ -79,6 +65,16 @@
           :key="link.title"
           v-bind="link"
         />
+
+        <div v-if="isZCAdmin">
+          <q-item-label header> 管理 </q-item-label>
+
+          <EssentialLink
+            v-for="link in adminFuncList"
+            :key="link.title"
+            v-bind="link"
+          />
+        </div>
       </q-list>
     </q-drawer>
     <q-page-container>
@@ -126,10 +122,6 @@ import { useRoute, useRouter } from 'vue-router';
 
 const adminFuncList = [
   {
-    title: '用户前台',
-    link: '/zc',
-  },
-  {
     title: '班级概览',
     link: '/zc/admin/summary',
   },
@@ -157,7 +149,6 @@ const user = useUserStore();
 const router = useRouter();
 const route = useRoute();
 
-const selectedLink = ref(route.fullPath);
 const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -181,13 +172,6 @@ watch(
   }
 );
 
-watch(
-  () => selectedLink.value,
-  () => {
-    router.push(selectedLink.value);
-    user.needRefresh = true;
-  }
-);
 function initAdminSelection() {
   if (isZCAdmin.value) {
     if (user.adminSelectClass === '') {
