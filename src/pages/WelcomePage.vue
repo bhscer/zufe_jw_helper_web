@@ -96,6 +96,8 @@ function onMouseEnter(st, raw_class) {
 function onMouseLeave(st, raw_class) {
   st.fromElement.className = raw_class;
 }
+
+test_sentry();
 </script>
 <style lang="scss">
 .gray-radius {
