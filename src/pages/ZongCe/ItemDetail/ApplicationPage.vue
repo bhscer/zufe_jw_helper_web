@@ -60,7 +60,7 @@
           value: user.info?.token ? user.info?.token : '',
         },
       ]"
-      label="请上传相关证明"
+      label="请上传相关证明(总大小不超15MB)"
       multiple
       style="max-width: 300px"
       field-name="file"
@@ -69,6 +69,8 @@
       @added="add_report"
       ref="uploader"
       :readonly="submiting"
+      :max-total-size="1024 * 1024 * 15"
+      @rejected="onRejected"
     />
   </q-page>
 </template>
@@ -108,7 +110,12 @@ const data: Ref<pointApply> = ref({
 const submiting = ref(false);
 
 var upload_queue: string[] = [];
-
+function onRejected(rejectedEntries) {
+  $q.notify({
+    type: 'negative',
+    message: '文件总大小超出限制，添加失败',
+  });
+}
 function submitAll() {
   if (upload_queue.length) {
     $q.notify({

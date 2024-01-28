@@ -7,11 +7,11 @@
       style="background-color: transparent"
     >
       <q-spinner-gears size="40px" color="primary" />
-      <p>正在获取信息</p>
+      <p>正在解析信息</p>
     </q-inner-loading>
     <error-text v-else :msg="err_msg"></error-text>
   </q-page>
-  <q-page class="q-ma-md" v-else>
+  <div class="q-ma-md" v-else>
     <div class="row">
       <div class="col">
         <div class="text-h5">加/减分申请</div>
@@ -28,14 +28,6 @@
           }}</span>
         </div>
 
-        <q-btn
-          outline
-          color="red"
-          v-if="data.approvedCode === 0"
-          label="取消申请"
-          @click="cancelApplication()"
-          :loading="submiting"
-        ></q-btn>
         <div v-if="data.approvedCode === 1 || data.approvedCode === 2">
           <div>{{ `审批人: ${data.approvedBy}` }}</div>
         </div>
@@ -79,14 +71,14 @@
         </a>
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 <script setup lang="ts">
 import { api } from '@/boot/axios';
 import ErrorText from '@/components/errorText.vue';
 import { useUserStore } from '@/stores/user';
 import { useQuasar } from 'quasar';
-import { Ref, onMounted, ref } from 'vue';
+import { Ref, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const user = useUserStore();
@@ -120,79 +112,24 @@ const loading = ref(false);
 const err_msg = ref('');
 const submiting = ref(false);
 
-function cancelApplicationReal() {
-  submiting.value = true;
-  api({
-    method: 'post',
-    url: `/zc/item/record/${route.params.dbid}/cancel`,
-  })
-    .then((dt) => {
-      submiting.value = false;
-      $q.notify({
-        type: 'positive',
-        message: '提交成功',
-        progress: true,
-      });
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      submiting.value = false;
-      var err_msg_notify = '';
-      try {
-        if (error.response.status === 401 || error.response.status === 400)
-          err_msg_notify = error.response.data.detail;
-        else err_msg_notify = '错误码' + error.response.status;
-      } catch {
-        err_msg_notify = '错误码' + error.code;
-      }
-      if (err_msg_notify === '') err_msg_notify = '未知错误';
-      if (err_msg_notify !== '') {
-        $q.notify({
-          type: 'negative',
-          message: err_msg_notify,
-          progress: true,
-        });
-      }
-    });
-}
-function cancelApplication() {
-  $q.dialog({
-    title: '确认',
-    message: '是否要取消该条申请？该操作无法撤销。',
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    cancelApplicationReal();
-  });
-}
-function getRecordDetail() {
-  loading.value = true;
+const props = defineProps<{
+  dt: pointApply;
+}>();
 
-  api({
-    method: 'post',
-    url: `/zc/item/record/point/${route.params.dbid}`,
-  })
-    .then((dt) => {
-      loading.value = false;
-      data.value = dt.data;
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      loading.value = false;
-      var err_msg_notify = '';
-      try {
-        if (error.response.status === 401 || error.response.status === 400)
-          err_msg_notify = error.response.data.detail;
-        else err_msg_notify = '错误码' + error.response.status;
-      } catch {
-        err_msg_notify = '错误码' + error.code;
-      }
-      if (err_msg_notify === '') err_msg_notify = '未知错误';
-      err_msg.value = err_msg_notify;
-    });
+function initData() {
+  loading.value = true;
+  data.value = props.dt;
+  loading.value = false;
 }
+
+watch(
+  () => props.dt,
+  () => {
+    initData();
+  }
+);
 
 onMounted(() => {
-  getRecordDetail();
+  initData();
 });
 </script>

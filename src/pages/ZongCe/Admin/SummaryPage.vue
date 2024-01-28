@@ -82,7 +82,7 @@ const loading = ref(true);
 const err_msg = ref('');
 const $q = useQuasar();
 const records = ref([]);
-const data = ref({});
+const data = ref([]);
 const table_first_head = ref([]);
 const table_second_head = ref([]);
 
@@ -92,7 +92,6 @@ function processData() {
   table_second_head.value = [];
   var first_stu = true;
 
-  console.log(data.value);
   data.value.forEach((stuInfo) => {
     var tmp_data = {
       stuName: stuInfo.stuName,

@@ -75,7 +75,11 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             path: 'records',
-            component: () => import('pages/ZongCe/Admin/RecordsAdmin.vue'),
+            component: () => import('pages/ZongCe/Admin/RecordsList.vue'),
+          },
+          {
+            path: 'record/:dbid',
+            component: () => import('pages/ZongCe/Admin/RecordAdmin.vue'),
           },
           {
             path: 'summary',
