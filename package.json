@@ -17,8 +17,10 @@
   "dependencies": {
     "@quasar/cli": "^2.3.0",
     "@quasar/extras": "^1.16.9",
+    "@tinymce/tinymce-vue": "^5.1.1",
     "@types/qrcode": "^1.5.0",
     "@vercel/analytics": "^1.0.1",
+    "animate.css": "^4.1.1",
     "axios": "^1.2.1",
     "images-quickly-compress": "^1.1.1",
     "js-md5": "^0.7.3",

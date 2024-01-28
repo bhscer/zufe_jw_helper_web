@@ -57,7 +57,7 @@
       </p>
       <jwc-login
         :finish_return_stu_info="finish_return_stu_info_receive"
-        :mode="1"
+        mode="register"
       ></jwc-login>
     </div>
   </div>

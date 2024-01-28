@@ -26,4 +26,5 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'ErrorNotFound',
 });
+document.querySelector('#loading-state')?.remove();
 </script>

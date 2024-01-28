@@ -56,7 +56,7 @@ export default route(function (/* { store, ssrContext } */) {
       }
     }
 
-    next(); // 一定要调用 ，执行之后的效果依赖next内带的参数
+    // next(); // 一定要调用 ，执行之后的效果依赖next内带的参数
   });
   return Router;
 });

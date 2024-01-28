@@ -39,9 +39,10 @@ import { useQuasar } from 'quasar';
 
 const props = defineProps<{
   finish_return_stu_info: any;
-  mode: number;
+  mode: string;
   pwd?: string;
   semesterKey?: string;
+  yearKey?: string;
 }>();
 // mode0 update
 const this_route = useRoute();
@@ -104,12 +105,13 @@ function loginFun() {
   logining.value = true;
   api({
     method: 'post',
-    url: '/jwc/checkQR',
+    url: `/jwc/checkQR/${props.mode}`,
     data: {
       uuid: uuid,
       mode: props.mode,
       pwd: props.pwd,
       semesterKey: props.semesterKey,
+      yearKey: props.yearKey,
     },
   })
     .then((data) => {
@@ -121,7 +123,7 @@ function loginFun() {
         message: data.data.msg,
         progress: true,
       });
-      if (props.mode === 1) {
+      if (props.mode === 'register') {
         props.finish_return_stu_info({
           stu_id: data.data.stu_id,
           cookies: data.data.cookies_text,

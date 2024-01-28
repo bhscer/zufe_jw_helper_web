@@ -47,7 +47,7 @@
       <p>为了核实您的身份，需要核验财大账号。</p>
       <jwc-login
         :finish_return_stu_info="finish_return_stu_info_receive"
-        :mode="2"
+        mode="forgotPwd"
         :pwd="md5(password)"
       ></jwc-login>
     </div>

@@ -66,6 +66,90 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/zc',
+    component: () => import('layouts/ZongCeLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/ZongCe/IndexPage.vue') },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'records',
+            component: () => import('pages/ZongCe/Admin/RecordsAdmin.vue'),
+          },
+          {
+            path: 'summary',
+            component: () => import('pages/ZongCe/Admin/SummaryPage.vue'),
+          },
+        ],
+      },
+      {
+        path: 'records',
+        component: () => import('pages/ZongCe/RecordsPage.vue'),
+      },
+      {
+        path: 'item',
+        children: [
+          {
+            path: encodeURI('智育/学习平均成绩'),
+            children: [
+              {
+                path: 'new',
+                component: () =>
+                  import('pages/ZongCe/ItemDetail/ApplicatinMarkPage.vue'),
+              },
+              {
+                path: ':dbid',
+                component: () =>
+                  import('pages/ZongCe/ItemDetail/RecordMarkPage.vue'),
+              },
+            ],
+          },
+          {
+            path: encodeURI('体育/体育课或体测成绩'),
+            children: [
+              {
+                path: 'new',
+                component: () =>
+                  import('pages/ZongCe/ItemDetail/ApplicatinMarkPage.vue'),
+              },
+              {
+                path: ':dbid',
+                component: () =>
+                  import('pages/ZongCe/ItemDetail/RecordMarkPage.vue'),
+              },
+            ],
+          },
+
+          {
+            path: 'record/:dbid',
+            component: () => import('pages/ZongCe/ItemDetail/RecordPage.vue'),
+          },
+          {
+            path: ':partName/:childrenName',
+            children: [
+              {
+                path: '',
+                component: () =>
+                  import('pages/ZongCe/ItemDetail/SummaryPage.vue'),
+              },
+              {
+                path: 'new',
+                component: () =>
+                  import('pages/ZongCe/ItemDetail/ApplicationPage.vue'),
+              },
+              {
+                path: ':dbid',
+                component: () =>
+                  import('pages/ZongCe/ItemDetail/RecordPage.vue'),
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
     path: '/Md5Encrypt',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/Md5Encrypt.vue') }],

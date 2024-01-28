@@ -183,7 +183,7 @@
             refreshInfoFun();
           }
         "
-        :mode="0"
+        mode="updateClassList"
         :semester-key="semesterKey"
       ></jwc-login>
     </q-card>

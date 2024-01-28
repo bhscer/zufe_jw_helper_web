@@ -27,51 +27,7 @@
           >
         </div>
         <div v-else>
-          <q-stepper v-model="user_data.curType" color="primary" animated>
-            <q-step
-              :name="0"
-              title="选书"
-              icon="shopping_cart"
-              :done="user_data.curType > 0"
-            >
-              <book-edit
-                :dt="user_data"
-                :refresh-info-fun="
-                  () => {
-                    getBookInfo();
-                  }
-                "
-                :semester-key="user.semesterKey"
-              ></book-edit>
-            </q-step>
-            <q-step
-              :name="1"
-              title="付款"
-              icon="attach_money"
-              :done="user_data.curType > 1"
-            >
-              <book-pay
-                :dt="user_data"
-                :semester-key="user.semesterKey"
-              ></book-pay>
-            </q-step>
-            <q-step
-              :name="2"
-              title="取书"
-              icon="forklift"
-              :done="user_data.curType > 2"
-            >
-              <book-take
-                :dt="user_data"
-                :semester-key="user.semesterKey"
-                :refresh-info-fun="
-                  () => {
-                    getBookInfo();
-                  }
-                "
-              ></book-take>
-            </q-step>
-          </q-stepper>
+          <zong-ce-info :dt="user_data"></zong-ce-info>
         </div>
       </div>
     </div>
@@ -79,16 +35,14 @@
 </template>
 
 <script lang="ts" setup>
-import BookEdit from 'components/BookProcess/bookEdit.vue';
 import { api } from 'boot/axios';
 import { onMounted, Ref, ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
-import BookPay from 'components/BookProcess/BookPay.vue';
-import BookTake from 'components/BookProcess/bookTake.vue';
 import { useUserStore } from '@/stores/user';
+import ZongCeInfo from '@/components/ZongCe/ZongCeInfo.vue';
 
 defineExpose({
-  getBookInfo,
+  getZCInfo,
 });
 
 const user_data = ref({});
@@ -96,13 +50,13 @@ const user = useUserStore();
 const loading = ref(true);
 const err_msg = ref('');
 const $q = useQuasar();
-function getBookInfo() {
+function getZCInfo() {
   user.needRefresh = false;
   loading.value = true;
   err_msg.value = '';
   api({
     method: 'post',
-    url: `/book/info/${user.semesterKey}`,
+    url: `/zc/info/${user.yearKey}`,
   })
     .then((data) => {
       user_data.value = data.data;
@@ -132,7 +86,7 @@ function getBookInfo() {
 }
 
 onMounted(() => {
-  getBookInfo();
+  getZCInfo();
 });
 
 watch(
@@ -140,7 +94,7 @@ watch(
   (val, preVal) => {
     if (val === true) {
       user.needRefresh = false;
-      getBookInfo();
+      getZCInfo();
     }
   }
 );
