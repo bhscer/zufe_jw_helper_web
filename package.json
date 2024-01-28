@@ -10,13 +10,17 @@
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build",
+    "build": "quasar build && npm run sentry:sourcemaps",
     "build:pwa": "quasar build -m pwa",
-    "deploy": "vercel"
+    "deploy": "vercel",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org bhscer --project jw-helper-web ./dist/spa && sentry-cli sourcemaps upload --org bhscer --project jw-helper-web ./dist/spa"
   },
   "dependencies": {
     "@quasar/cli": "^2.3.0",
     "@quasar/extras": "^1.16.9",
+    "@sentry/cli": "^2.26.0",
+    "@sentry/vite-plugin": "^2.10.3",
+    "@sentry/vue": "^7.98.0",
     "@types/qrcode": "^1.5.0",
     "@vercel/analytics": "^1.0.1",
     "animate.css": "^4.1.1",
