@@ -19,7 +19,7 @@ export const useVCStatStore = defineStore('vConsoleStat', () => {
   }
 
   function apply() {
-    if (behavior.value === Status.Display) {
+    if (behavior.value === Status.Hide) {
       document
         .querySelector('#__vconsole')
         ?.setAttribute('style', 'display:none');
