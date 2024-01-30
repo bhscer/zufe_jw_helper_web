@@ -46,7 +46,6 @@
           label="选择班级"
           @click="user.needRefresh = true"
         />
-
         <switch-semester class="q-my-sm"></switch-semester>
 
         <q-btn

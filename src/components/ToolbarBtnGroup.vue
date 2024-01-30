@@ -1,4 +1,5 @@
 <template>
+  <v-console-control-btn></v-console-control-btn>
   <switch-theme-btn></switch-theme-btn>
 
   <account-btn></account-btn>
@@ -10,6 +11,7 @@ import { useQuasar } from 'quasar';
 import AccountBtn from 'components/btn/AccountBtn.vue';
 import SwitchThemeBtn from 'components/btn/SwitchThemeBtn.vue';
 import SwitchSemester from './switchSemester.vue';
+import VConsoleControlBtn from './btn/vConsoleControlBtn.vue';
 // import ToolbarAddBtn from "./btn/ToolbarAddBtn.vue";
 
 const user = useUserStore();
