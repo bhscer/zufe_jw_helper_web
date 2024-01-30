@@ -69,6 +69,7 @@
     <q-separator class="q-my-md" />
     <div class="text-h6 q-mb-sm">证明文件</div>
     <div>
+      <div v-if="data.fileList.length === 0">没有提供任何文件</div>
       <div v-for="(item, idx) in data.fileList" :key="item">
         <a
           :href="`${$api_url}zc/item/material/download/${user.info?.token}/${$route.params.dbid}/${item}`"

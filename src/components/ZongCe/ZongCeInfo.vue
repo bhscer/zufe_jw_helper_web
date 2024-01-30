@@ -44,6 +44,13 @@
             <a
               class="no-style-a"
               :href="`/zc/item/${prop.node.partName}/${prop.node.childrenName}/${prop.node.id}`"
+              @click.prevent="
+                $router.push(
+                  encodeURI(
+                    `/zc/item/${prop.node.partName}/${prop.node.childrenName}/${prop.node.id}`
+                  )
+                )
+              "
             >
               <div>{{ prop.node.name }}</div>
             </a>

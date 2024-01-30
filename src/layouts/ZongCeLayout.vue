@@ -144,6 +144,12 @@ const linksList = [
     icon: 'code',
     link: '/zc/records',
   },
+  {
+    title: '综合测评登记表导出',
+    caption: '',
+    icon: 'code',
+    link: '/zc/word',
+  },
 ];
 const user = useUserStore();
 const router = useRouter();

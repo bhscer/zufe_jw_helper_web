@@ -48,7 +48,7 @@
 
     <q-separator class="q-my-md" />
     <div class="text-h6 q-mb-sm">该申请的最终命名将为:</div>
-    <div>{{ `${data.shortdisc} -> ${data.gainMark}分` }}</div>
+    <div>{{ `${data.shortdisc} = ${data.gainMark}分` }}</div>
     <q-separator class="q-my-md" />
     <div class="text-h6 q-mb-sm">证明文件</div>
     <p>目前暂不支持同个申请中同时上传不同文件夹中同名的文件，请妥善命名</p>

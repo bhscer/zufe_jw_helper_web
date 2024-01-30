@@ -70,6 +70,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/ZongCeLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ZongCe/IndexPage.vue') },
+      { path: 'word', component: () => import('pages/ZongCe/WordOutput.vue') },
       {
         path: 'admin',
         children: [
