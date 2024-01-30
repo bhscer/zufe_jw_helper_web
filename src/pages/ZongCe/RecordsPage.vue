@@ -49,7 +49,7 @@
                 </td>
                 <td>
                   <a
-                    :href="`/zc/item/${item.partName}/${item.childrenName}/${item.id}`"
+                    :href="`${url_prefix}${item.partName}/${item.childrenName}/${item.id}`"
                     target="_blank"
                   >
                     <q-badge
@@ -59,7 +59,7 @@
                       @click.prevent="
                         $router.push(
                           encodeURI(
-                            `/zc/item/${item.partName}/${item.childrenName}/${item.id}`
+                            `${url_prefix}${item.partName}/${item.childrenName}/${item.id}`
                           )
                         )
                       "
@@ -90,6 +90,25 @@ const loading = ref(true);
 const err_msg = ref('');
 const $q = useQuasar();
 
+var url_choices = [
+  '/zc/item/',
+  `/zc/admin/view/${route.params.viewedStuId}/${route.params.viewedStuName}/item/`,
+];
+const url_prefix = ref(url_choices[0]);
+function getUrlPrefix() {
+  var idx = route.fullPath.indexOf('/admin/view') !== -1 ? 1 : 0;
+  if (idx === 1) {
+    url_choices[1] = `/zc/admin/view/${route.params.viewedStuId}/${route.params.viewedStuName}/item/`;
+  }
+  url_prefix.value = url_choices[idx];
+}
+watch(
+  () => route.fullPath,
+  () => {
+    getUrlPrefix();
+  }
+);
+
 function getRecords() {
   user.needRefresh = false;
   loading.value = true;
@@ -97,6 +116,10 @@ function getRecords() {
   api({
     method: 'post',
     url: `/zc/${user.yearKey}/item/records`,
+    data: {
+      stuId: route.params.viewedStuId,
+      admin: route.fullPath.indexOf('/admin/view') !== -1,
+    },
   })
     .then((data) => {
       records.value = data.data;
