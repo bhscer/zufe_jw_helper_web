@@ -99,8 +99,10 @@ watch(
   () => yearKey.value,
   (val, preVal) => {
     user.yearKey = val;
-    // user.needRefresh = true;
-    if (preVal !== '') router.push('/zc');
+    user.needRefresh = true;
+    if (preVal !== '') {
+      router.push('/zc');
+    }
   }
 );
 </script>
