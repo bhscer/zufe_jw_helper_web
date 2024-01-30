@@ -19,6 +19,7 @@ export const useUserStore = defineStore('user', () => {
   const needRefresh = ref(false);
   const yearKey = ref('');
   const yearKeyStatus = ref(0); // 0:loading, 1:error, 2:ok
+  const viewingStuName = ref('');
 
   function login(form: user.LoginForm) {
     return new Promise<user.UserInfo>((resolve, reject) => {
@@ -100,5 +101,6 @@ export const useUserStore = defineStore('user', () => {
     adminSelectClass,
     yearKey,
     yearKeyStatus,
+    viewingStuName,
   };
 });

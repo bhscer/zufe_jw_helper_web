@@ -43,11 +43,11 @@
           <div v-else>
             <a
               class="no-style-a"
-              :href="`/zc/item/${prop.node.partName}/${prop.node.childrenName}/${prop.node.id}`"
+              :href="`${url_prefix}${prop.node.partName}/${prop.node.childrenName}/${prop.node.id}`"
               @click.prevent="
                 $router.push(
                   encodeURI(
-                    `/zc/item/${prop.node.partName}/${prop.node.childrenName}/${prop.node.id}`
+                    `${url_prefix}${prop.node.partName}/${prop.node.childrenName}/${prop.node.id}`
                   )
                 )
               "
@@ -61,12 +61,12 @@
       <template v-slot:default-body="prop">
         <div v-if="prop.node.lv === 3 && prop.node.editable">
           <a
-            :href="`/zc/item/${prop.node.fa}/${prop.node.name}`"
+            :href="`${url_prefix}${prop.node.fa}/${prop.node.name}`"
             class="no-style-a"
             target="_blank"
             @click.prevent="
               $router.push(
-                encodeURI(`/zc/item/${prop.node.fa}/${prop.node.name}`)
+                encodeURI(`${url_prefix}${prop.node.fa}/${prop.node.name}`)
               )
             "
           >
@@ -97,16 +97,22 @@
 </template>
 <script setup lang="ts">
 import errorText from '../errorText.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import _ from 'lodash';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const processing = ref(true);
 const err_msg = ref('');
 const uiMode = ref('tree');
 const props = defineProps<{
   dt: any;
 }>();
-
+var url_choices = [
+  '/zc/item/',
+  `/zc/admin/view/${route.params.viewedStuId}/${route.params.viewedStuName}/item/`,
+];
+const url_prefix = ref(url_choices[0]);
 const processed_data = ref([]);
 const processed_data_table = ref([]);
 
@@ -174,8 +180,22 @@ function process() {
 }
 
 onMounted(() => {
+  getUrlPrefix();
   process();
 });
+function getUrlPrefix() {
+  var idx = route.fullPath.indexOf('/admin/view') !== -1 ? 1 : 0;
+  if (idx === 1) {
+    url_choices[1] = `/zc/admin/view/${route.params.viewedStuId}/${route.params.viewedStuName}/item/`;
+  }
+  url_prefix.value = url_choices[idx];
+}
+watch(
+  () => route.fullPath,
+  () => {
+    getUrlPrefix();
+  }
+);
 </script>
 <style>
 .no-style-a {

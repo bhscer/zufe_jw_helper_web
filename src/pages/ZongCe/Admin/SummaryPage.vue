@@ -24,10 +24,15 @@
         <div v-else>
           <div v-if="records.length === 0">没有记录哦~</div>
           <div v-else>
+            <q-checkbox label="显示操作栏" v-model="showOperation" />
             <q-markup-table separator="cell">
               <thead>
                 <tr>
+                  <th class="text-left" rowspan="2" v-if="showOperation">
+                    操作
+                  </th>
                   <th class="text-left" rowspan="2">姓名</th>
+                  <th class="text-left" rowspan="2">学号</th>
                   <th class="text-left" rowspan="2">总分</th>
                   <th
                     v-for="item in table_first_head"
@@ -50,7 +55,23 @@
               </thead>
               <tbody>
                 <tr v-for="item in records" :key="item">
+                  <td class="text-left" v-if="showOperation">
+                    <a :href="`/zc/admin/view/${item.stuId}/${item.stuName}/`">
+                      <q-badge
+                        @click.prevent="
+                          $router.push(
+                            encodeURI(
+                              `/zc/admin/view/${item.stuId}/${item.stuName}/`
+                            )
+                          )
+                        "
+                      >
+                        查看详情
+                      </q-badge>
+                    </a>
+                  </td>
                   <td class="text-left">{{ item.stuName }}</td>
+                  <td class="text-left">{{ item.stuId }}</td>
                   <td class="text-left">{{ item.mark }}</td>
                   <td
                     class="text-left"
@@ -85,6 +106,7 @@ const records = ref([]);
 const data = ref([]);
 const table_first_head = ref([]);
 const table_second_head = ref([]);
+const showOperation = ref(true);
 
 function processData() {
   records.value = [];
@@ -95,6 +117,7 @@ function processData() {
   data.value.forEach((stuInfo) => {
     var tmp_data = {
       stuName: stuInfo.stuName,
+      stuId: stuInfo.stuId,
       mark: stuInfo.mark,
       data: [],
     };

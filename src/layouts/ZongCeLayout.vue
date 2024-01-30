@@ -24,6 +24,9 @@
           @click="toggleLeftDrawer"
           color="primary"
         />
+        <div v-if="viewingOther" class="text-primary q-ml-sm">
+          {{ `正在浏览: ${$route.params.viewedStuName}` }}
+        </div>
         <q-space></q-space>
 
         <q-select
@@ -58,15 +61,20 @@
     </q-header>
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="180">
       <q-list>
-        <q-item-label header> 菜单 </q-item-label>
+        <q-item-label header>
+          {{ viewingOther ? '你 的菜单' : '菜单' }}
+        </q-item-label>
 
         <EssentialLink
           v-for="link in linksList"
           :key="link.title"
           v-bind="link"
+          :prefix="'/zc/'"
         />
 
         <div v-if="isZCAdmin">
+          <q-separator />
+
           <q-item-label header> 管理 </q-item-label>
 
           <EssentialLink
@@ -74,6 +82,20 @@
             :key="link.title"
             v-bind="link"
           />
+
+          <div v-if="viewingOther">
+            <q-separator />
+            <q-item-label header>
+              {{ `${route.params.viewedStuName} 的菜单` }}
+            </q-item-label>
+
+            <EssentialLink
+              v-for="link in linksList"
+              :key="link.title"
+              v-bind="link"
+              :prefix="viewdedUserPrefix"
+            />
+          </div>
         </div>
       </q-list>
     </q-drawer>
@@ -130,25 +152,27 @@ const adminFuncList = [
     link: '/zc/admin/records',
   },
 ];
-
 const linksList = [
   {
     title: '概览',
     caption: '',
     icon: 'home',
     link: '/zc',
+    lpart: '',
   },
   {
     title: '记录',
     caption: '',
     icon: 'code',
     link: '/zc/records',
+    lpart: 'records',
   },
   {
     title: '综合测评登记表导出',
     caption: '',
     icon: 'code',
     link: '/zc/word',
+    lpart: 'word',
   },
 ];
 const user = useUserStore();
@@ -159,7 +183,13 @@ const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
-
+let viewingOther = computed(() => {
+  if (route.fullPath.indexOf('/admin/view') !== -1) return true;
+  else return false;
+});
+let viewdedUserPrefix = computed(() => {
+  return `/zc/admin/view/${route.params.viewedStuId}/${route.params.viewedStuName}/`;
+});
 let isZCAdmin = computed(() => {
   if (
     user.info &&

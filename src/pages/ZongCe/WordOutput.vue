@@ -44,17 +44,15 @@
               <div>
                 {{ `完成时间: ${$TimestampToDate(user_data.finishedTime)}` }}
               </div>
-              <a
-                target="_blank"
-                :href="`${$api_url}zc/${user.yearKey}/word/download/${user.info?.token}/${user.info?.stuid} ${user.info?.stuname} 综合测评登记表.docx`"
-                >下载文件</a
-              >
+              <a target="_blank" :href="downloadFilePath">下载文件</a>
             </div>
           </div>
           <div v-else>无生成记录</div>
           <q-separator class="q-my-md" />
           <div>
             <q-btn
+              outline
+              color="primary"
               label="请求生成"
               @click="submitRequest()"
               :loading="submiting"
@@ -68,10 +66,11 @@
 
 <script lang="ts" setup>
 import { api } from 'boot/axios';
-import { onMounted, Ref, ref, watch } from 'vue';
+import { computed, getCurrentInstance, onMounted, Ref, ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useUserStore } from '@/stores/user';
-import { exists } from 'fs';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+const { proxy, ctx } = getCurrentInstance();
 
 const user_data = ref({});
 const user = useUserStore();
@@ -79,7 +78,16 @@ const loading = ref(true);
 const submiting = ref(false);
 const err_msg = ref('');
 const $q = useQuasar();
+const route = useRoute();
 
+let downloadFilePath = computed(() => {
+  var api_url = proxy.$api_url;
+  if (route.fullPath.indexOf('/admin/view') === -1) {
+    return `${api_url}zc/${user.yearKey}/word/download/${user.info?.token}/${user.info?.stuid}/${user.info?.stuid} ${user.info?.stuname} 综合测评登记表.docx`;
+  } else {
+    return `${api_url}zc/${user.yearKey}/word/download/${user.info?.token}/${route.params.viewedStuId}/${route.params.viewedStuId} ${route.params.viewedStuName} 综合测评登记表.docx`;
+  }
+});
 function getWordInfo() {
   user.needRefresh = false;
   loading.value = true;
@@ -87,6 +95,10 @@ function getWordInfo() {
   api({
     method: 'post',
     url: `/zc/${user.yearKey}/word/info`,
+    data: {
+      stuId: route.params.viewedStuId,
+      admin: route.fullPath.indexOf('/admin/view') !== -1,
+    },
   })
     .then((data) => {
       user_data.value = data.data;
@@ -120,6 +132,10 @@ function submitRequest() {
   api({
     method: 'post',
     url: `/zc/${user.yearKey}/word/gen`,
+    data: {
+      stuId: route.params.viewedStuId,
+      admin: route.fullPath.indexOf('/admin/view') !== -1,
+    },
   })
     .then((dt) => {
       submiting.value = false;
@@ -163,6 +179,13 @@ watch(
       user.needRefresh = false;
       getWordInfo();
     }
+  }
+);
+
+watch(
+  () => route.fullPath,
+  (val, preVal) => {
+    user.needRefresh = true;
   }
 );
 </script>

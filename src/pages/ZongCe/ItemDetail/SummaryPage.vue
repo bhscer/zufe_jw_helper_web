@@ -33,9 +33,10 @@
             </div>
             <div class="col-auto">
               <a
+                v-if="!url_admin"
                 :href="
                   encodeURI(
-                    `/zc/item/${route.params.partName}/${route.params.childrenName}/new`
+                    `${url_prefix}${route.params.partName}/${route.params.childrenName}/new`
                   )
                 "
                 target="_blank"
@@ -45,7 +46,7 @@
                   @click.prevent="
                     $router.push(
                       encodeURI(
-                        `/zc/item/${route.params.partName}/${route.params.childrenName}/new`
+                        `${url_prefix}${route.params.partName}/${route.params.childrenName}/new`
                       )
                     )
                   "
@@ -75,7 +76,7 @@
                 </td>
                 <td>
                   <a
-                    :href="`/zc/item/${route.params.partName}/${route.params.childrenName}/${item.id}`"
+                    :href="`${url_prefix}${route.params.partName}/${route.params.childrenName}/${item.id}`"
                     target="_blank"
                   >
                     <q-badge
@@ -85,7 +86,7 @@
                       @click.prevent="
                         $router.push(
                           encodeURI(
-                            `/zc/item/${route.params.partName}/${route.params.childrenName}/${item.id}`
+                            `${url_prefix}${route.params.partName}/${route.params.childrenName}/${item.id}`
                           )
                         )
                       "
@@ -116,6 +117,27 @@ const loading = ref(true);
 const err_msg = ref('');
 const $q = useQuasar();
 
+const url_admin = ref(false);
+var url_choices = [
+  '/zc/item/',
+  `/zc/admin/view/${route.params.viewedStuId}/${route.params.viewedStuName}/item/`,
+];
+const url_prefix = ref(url_choices[0]);
+function getUrlPrefix() {
+  var idx = route.fullPath.indexOf('/admin/view') !== -1 ? 1 : 0;
+  if (idx === 1) {
+    url_choices[1] = `/zc/admin/view/${route.params.viewedStuId}/${route.params.viewedStuName}/item/`;
+  }
+  url_admin.value = idx == 1;
+  url_prefix.value = url_choices[idx];
+}
+watch(
+  () => route.fullPath,
+  () => {
+    getUrlPrefix();
+  }
+);
+
 function getZCSPartInfo() {
   user.needRefresh = false;
   loading.value = true;
@@ -123,6 +145,10 @@ function getZCSPartInfo() {
   api({
     method: 'post',
     url: `/zc/${user.yearKey}/item/${route.params.partName}/${route.params.childrenName}/info`,
+    data: {
+      stuId: route.params.viewedStuId,
+      admin: route.fullPath.indexOf('/admin/view') !== -1,
+    },
   })
     .then((data) => {
       user_data.value = data.data;
@@ -152,6 +178,7 @@ function getZCSPartInfo() {
 }
 
 onMounted(() => {
+  getUrlPrefix();
   getZCSPartInfo();
 });
 
@@ -162,6 +189,12 @@ watch(
       user.needRefresh = false;
       getZCSPartInfo();
     }
+  }
+);
+watch(
+  () => route.fullPath,
+  (val, preVal) => {
+    user.needRefresh = true;
   }
 );
 </script>

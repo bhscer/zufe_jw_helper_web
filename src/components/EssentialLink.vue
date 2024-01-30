@@ -1,5 +1,12 @@
 <template>
-  <q-item clickable tag="a" :to="link" :active="link == $route.fullPath">
+  <q-item
+    clickable
+    tag="a"
+    :to="encodeURI(lpart !== null ? prefix + lpart : link)"
+    :active="
+      encodeURI(lpart !== null ? prefix + lpart : link) === $route.fullPath
+    "
+  >
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
@@ -35,6 +42,15 @@ export default defineComponent({
     icon: {
       type: String,
       default: '',
+    },
+
+    prefix: {
+      type: String,
+      default: null,
+    },
+    lpart: {
+      type: String,
+      default: null,
     },
   },
 });

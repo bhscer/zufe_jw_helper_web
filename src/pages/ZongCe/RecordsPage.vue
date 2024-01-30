@@ -138,4 +138,10 @@ watch(
     }
   }
 );
+watch(
+  () => route.fullPath,
+  (val, preVal) => {
+    user.needRefresh = true;
+  }
+);
 </script>

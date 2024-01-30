@@ -40,6 +40,7 @@ import { onMounted, Ref, ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useUserStore } from '@/stores/user';
 import ZongCeInfo from '@/components/ZongCe/ZongCeInfo.vue';
+import { useRoute } from 'vue-router';
 
 defineExpose({
   getZCInfo,
@@ -50,6 +51,8 @@ const user = useUserStore();
 const loading = ref(true);
 const err_msg = ref('');
 const $q = useQuasar();
+const route = useRoute();
+
 function getZCInfo() {
   user.needRefresh = false;
   loading.value = true;
@@ -57,6 +60,10 @@ function getZCInfo() {
   api({
     method: 'post',
     url: `/zc/info/${user.yearKey}`,
+    data: {
+      stuId: route.params.viewedStuId,
+      admin: route.fullPath.indexOf('/admin/view') !== -1,
+    },
   })
     .then((data) => {
       user_data.value = data.data;
@@ -96,6 +103,13 @@ watch(
       user.needRefresh = false;
       getZCInfo();
     }
+  }
+);
+
+watch(
+  () => route.fullPath,
+  (val, preVal) => {
+    user.needRefresh = true;
   }
 );
 </script>

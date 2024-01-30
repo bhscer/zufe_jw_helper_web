@@ -87,7 +87,7 @@ import { api } from '@/boot/axios';
 import ErrorText from '@/components/errorText.vue';
 import { useUserStore } from '@/stores/user';
 import { useQuasar } from 'quasar';
-import { Ref, onMounted, ref } from 'vue';
+import { Ref, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const user = useUserStore();
@@ -168,6 +168,7 @@ function cancelApplication() {
 }
 function getRecordDetail() {
   loading.value = true;
+  user.needRefresh = false;
 
   api({
     method: 'post',
@@ -196,4 +197,14 @@ function getRecordDetail() {
 onMounted(() => {
   getRecordDetail();
 });
+
+watch(
+  () => user.needRefresh,
+  (val, preVal) => {
+    if (val === true) {
+      user.needRefresh = false;
+      getRecordDetail();
+    }
+  }
+);
 </script>

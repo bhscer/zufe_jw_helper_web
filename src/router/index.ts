@@ -38,6 +38,11 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     // console.log(to); // 即将要跳转的路由
     // console.log(from); // 即将要离开的路由
+
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    }
+
     if (localStorage.getItem('jw-auth-token')) {
       next();
     } else {
