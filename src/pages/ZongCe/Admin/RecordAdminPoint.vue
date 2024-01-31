@@ -19,13 +19,19 @@
       </div>
       <div class="col-auto" align="right">
         <div>
-          <q-badge
-            rounded
-            :color="['primary', 'green', 'red', 'black'][data.approvedCode]"
-          />
-          <span>{{
-            ' ' + ['待审核', '已通过', '不通过', '已取消'][data.approvedCode]
-          }}</span>
+          <div v-if="data.cancel === true">
+            <q-badge rounded color="black"></q-badge>
+            <span>已取消</span>
+          </div>
+          <div v-else>
+            <q-badge
+              rounded
+              :color="['primary', 'green', 'red'][data.approvedCode]"
+            />
+            <span>{{
+              ' ' + ['待审核', '已通过', '不通过'][data.approvedCode]
+            }}</span>
+          </div>
         </div>
 
         <div v-if="data.approvedCode === 1 || data.approvedCode === 2">

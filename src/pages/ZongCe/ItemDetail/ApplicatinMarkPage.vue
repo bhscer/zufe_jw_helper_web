@@ -96,6 +96,7 @@
   <q-dialog v-model="showJwcForm">
     <q-card class="q-pa-lg">
       <p>{{ '正在使用教务处获取' + user.yearKey + '学年的成绩' }}</p>
+      <div>请注意，成绩同步后，之前的申请将全部标为取消</div>
       <jwc-login
         :finish_return_stu_info="
           () => {

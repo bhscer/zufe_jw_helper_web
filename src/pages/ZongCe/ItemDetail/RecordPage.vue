@@ -80,6 +80,25 @@
         </a>
       </div>
     </div>
+
+    <q-separator class="q-my-md" />
+    <div class="text-h5 q-mb-sm">审批结果</div>
+
+    <q-separator class="q-my-md" />
+    <div>
+      <div v-if="data.cancel === true">
+        <div>该申请已被取消</div>
+        <div>{{ `原因: ${data.cancelReason}` }}</div>
+      </div>
+      <div>
+        {{ '审批状态为: ' + ['待审核', '已通过', '不通过'][data.approvedCode] }}
+      </div>
+    </div>
+    <div v-if="data.approvedCode === 1 || data.approvedCode === 2">
+      <div class="text-h6 q-mb-sm">描述</div>
+      <div>{{ `审批人: ${data.approvedBy}` }}</div>
+      <div v-html="data.approvedText"></div>
+    </div>
   </q-page>
 </template>
 <script setup lang="ts">

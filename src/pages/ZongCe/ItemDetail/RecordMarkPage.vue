@@ -19,25 +19,37 @@
       </div>
       <div class="col-auto" align="right">
         <div>
-          <q-badge
-            rounded
-            :color="['primary', 'green', 'red', 'black'][data.approvedCode]"
-          />
-          <span>{{
-            ' ' + ['待审核', '已通过', '不通过', '已取消'][data.approvedCode]
-          }}</span>
+          <div v-if="data.cancel === true">
+            <q-badge rounded color="black"></q-badge>
+            <span>已取消</span>
+          </div>
+          <div v-else>
+            <q-badge
+              rounded
+              :color="['primary', 'green', 'red'][data.approvedCode]"
+            />
+            <span>{{
+              ' ' + ['待审核', '已通过', '不通过'][data.approvedCode]
+            }}</span>
+          </div>
         </div>
 
         <q-btn
           outline
           color="red"
-          v-if="data.approvedCode === 0"
+          v-if="data.approvedCode === 0 && data.cancel === false"
           label="取消申请"
           @click="cancelApplication()"
           :loading="submiting"
         ></q-btn>
         <div v-if="data.approvedCode === 1 || data.approvedCode === 2">
-          <div>{{ `审批人: ${data.approvedBy}` }}</div>
+          <div>
+            {{
+              `${data.cancel === true ? '取消前' : ''}审批人: ${
+                data.approvedBy
+              }`
+            }}
+          </div>
         </div>
       </div>
     </div>
@@ -76,6 +88,25 @@
     <q-separator class="q-my-md" />
     <div class="text-h6 q-mb-sm">描述</div>
     <div v-html="data.description"></div>
+
+    <q-separator class="q-my-md" />
+    <div class="text-h5 q-mb-sm">审批结果</div>
+
+    <q-separator class="q-my-md" />
+    <div>
+      <div v-if="data.cancel === true">
+        <div>该申请已被取消</div>
+        <div>{{ `原因: ${data.cancelReason}` }}</div>
+      </div>
+      <div>
+        {{ '审批状态为: ' + ['待审核', '已通过', '不通过'][data.approvedCode] }}
+      </div>
+    </div>
+    <div v-if="data.approvedCode === 1 || data.approvedCode === 2">
+      <div class="text-h6 q-mb-sm">描述</div>
+      <div>{{ `审批人: ${data.approvedBy}` }}</div>
+      <div v-html="data.approvedText"></div>
+    </div>
   </q-page>
 </template>
 <script setup lang="ts">
