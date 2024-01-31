@@ -15,7 +15,9 @@
       </div>
     </div>
     <div v-else>
-      <div>有时候服务器会出问题导致报错(主要是P2)，若出现问题请多尝试几次</div>
+      <div>
+        有时候服务器会出问题导致报错(主要是P2)，原因正在排查，若出现问题请多尝试几次
+      </div>
       <div v-if="post_data.registerMode || post_data.need_pwd">
         <ul>
           <li>在密码绑定后，之后每次登录你只需输入验证码。</li>

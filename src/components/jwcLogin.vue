@@ -54,5 +54,5 @@ const props = defineProps<{
   yearKey?: string;
 }>();
 
-const cur_tab = ref('qr');
+const cur_tab = ref('pwd');
 </script>
