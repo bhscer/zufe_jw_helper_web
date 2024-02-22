@@ -44,6 +44,10 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/Book/Admin/takeListVerify.vue'),
           },
           {
+            path: 'take/upload',
+            component: () => import('pages/Book/Admin/TakeUpload.vue'),
+          },
+          {
             path: 'history/list',
             component: () => import('pages/Book/Admin/bookHistoryList.vue'),
           },

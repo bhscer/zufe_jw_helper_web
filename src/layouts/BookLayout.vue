@@ -128,6 +128,10 @@ const adminFuncList = [
     link: '/book',
   },
   {
+    title: '领书录入',
+    link: '/book/admin/take/upload',
+  },
+  {
     title: '班级概览',
     link: '/book/admin/class/summary',
   },

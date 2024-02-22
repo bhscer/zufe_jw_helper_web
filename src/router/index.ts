@@ -35,6 +35,8 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
+  const noLoginNeedList = ['/login', '/test_img_upload'];
+
   Router.beforeEach((to, from, next) => {
     // console.log(to); // 即将要跳转的路由
     // console.log(from); // 即将要离开的路由
@@ -46,7 +48,7 @@ export default route(function (/* { store, ssrContext } */) {
     if (localStorage.getItem('jw-auth-token')) {
       next();
     } else {
-      if (to.path === '/login') {
+      if (noLoginNeedList.indexOf(to.path) !== -1) {
         next();
       } else {
         try {
