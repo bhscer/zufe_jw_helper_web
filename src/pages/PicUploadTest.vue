@@ -55,8 +55,8 @@ const isSubmitMode = ref(true);
 const $q = useQuasar();
 let imageCompress = new ImagesQuicklyCompress({
   mode: 'width', //根据固定宽度压缩
-  num: 800, //压缩后所有图片的宽度都是800px
-  size: 800, //图片大小超过800k压缩率比较低b执行压缩
+  num: 1200, //压缩后所有图片的宽度都是?px
+  size: 1000, //图片大小超过?k压缩率比较低b执行压缩
   imageType: 'image/jpeg',
   quality: 0.8,
   orientation: false,
