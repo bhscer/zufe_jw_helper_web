@@ -116,7 +116,10 @@
             <q-expansion-item expand-separator icon="history" label="已拿记录">
               <q-card>
                 <q-card-section>
-                  <take-record-card :records="dt.tookList"></take-record-card>
+                  <take-record-card
+                    :records="dt.tookList"
+                    :show-delete="true"
+                  ></take-record-card>
                 </q-card-section>
               </q-card>
             </q-expansion-item>
@@ -346,6 +349,7 @@ const stuId = ref('220110');
 const noResult = ref(true);
 
 async function doSearch() {
+  user.needRefresh = false;
   loading.value = true;
   noResult.value = false;
   err_msg.value = '';
@@ -374,4 +378,15 @@ async function doSearch() {
       err_msg.value = err_msg_notify;
     });
 }
+
+watch(
+  () => user.needRefresh,
+  () => {
+    if (user.needRefresh === true) {
+      user.needRefresh = false;
+      if (noResult.value) return;
+      doSearch();
+    }
+  }
+);
 </script>

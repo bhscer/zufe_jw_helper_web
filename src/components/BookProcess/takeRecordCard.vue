@@ -3,12 +3,15 @@ import 'viewerjs/dist/viewer.css';
 
 import ClassAndBookTable from 'components/BookProcess/classAndBookTable.vue';
 import { Ref, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { api } from 'boot/axios';
 
 interface BookDetailNoPrice {
   className: string;
   bookName: string;
 }
 interface TakeRecord {
+  takeId: string;
   takeTime: number;
   takeList: BookDetailNoPrice[];
   imgId: string;
@@ -16,11 +19,61 @@ interface TakeRecord {
 }
 defineProps<{
   records: TakeRecord[];
+  showDelete?: boolean;
 }>();
 
 function shortTxt(txt: string) {
   if (txt.length <= 12) return txt;
   return txt.substring(0, 6) + '...' + txt.substring(txt.length - 6);
+}
+const $q = useQuasar();
+
+const deleting = ref(false);
+function deleteRecordReal(rid: string) {
+  deleting.value = true;
+
+  api({
+    method: 'post',
+    url: `/admin/book/take/delete/${rid}`,
+  })
+    .then((data) => {
+      deleting.value = false;
+      $q.notify({
+        type: 'positive',
+        message: '删除成功，请手动刷新！',
+        progress: true,
+      });
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      deleting.value = false;
+      var err_msg_notify = '';
+      try {
+        if (error.response.status === 401 || error.response.status === 400)
+          err_msg_notify = error.response.data.detail;
+        else err_msg_notify = '错误码' + error.response.status;
+      } catch {
+        err_msg_notify = '错误码' + error.code;
+      }
+      if (err_msg_notify === '') err_msg_notify = '未知错误';
+      if (err_msg_notify !== '') {
+        $q.notify({
+          type: 'negative',
+          message: err_msg_notify,
+          progress: true,
+        });
+      }
+    });
+}
+function deleteRecord(rid: string) {
+  $q.dialog({
+    title: '确认删除?',
+    message: '此操作无法撤回',
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteRecordReal(rid);
+  });
 }
 </script>
 
@@ -78,6 +131,15 @@ function shortTxt(txt: string) {
           <class-and-book-table
             :need-take-list="record.takeList"
           ></class-and-book-table>
+          <div v-if="showDelete">
+            <q-btn
+              label="删除此记录"
+              outline
+              color="negative"
+              @click="deleteRecord(record.takeId)"
+              :loading="deleting"
+            />
+          </div>
         </q-card-section>
       </q-card>
     </q-expansion-item>
