@@ -61,6 +61,11 @@
           class="col gray-radius q-py-sm q-px-lg flex"
           @click.prevent="
             loading[1] = true;
+            $q.notify({
+              type: 'negative',
+              message: '本功能未正式投入使用，请勿当真',
+              progress: true,
+            });
             $router.push('/zc');
           "
         >

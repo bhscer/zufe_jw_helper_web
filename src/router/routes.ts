@@ -240,6 +240,13 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/test_img_upload',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/PicUploadTest.vue') },
+    ],
+  },
+  {
     path: '/Md5Encrypt',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/Md5Encrypt.vue') }],
