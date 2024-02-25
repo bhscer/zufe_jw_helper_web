@@ -18,11 +18,22 @@
     </q-page>
 
     <div v-else>
-      <div>{{ `已支付:${ana_paied}, 未支付:${ana_need_pay}` }}</div>
+      <div>{{ `已支付:${ana_paied}, 总计:${ana_need_pay}` }}</div>
+      <div class="row">
+        <q-checkbox label="只看有订书" v-model="fli_have_book" />
+        <q-select
+          outlined
+          label="性别"
+          :options="fli_sex_li"
+          v-model="fli_sex"
+        />
+      </div>
       <q-markup-table>
         <thead>
           <tr>
             <th class="text-left" style="width: 5%">姓名</th>
+            <th class="text-left" style="width: 5%">学号</th>
+            <th class="text-left" style="width: 5%">性别</th>
             <th class="text-left" style="width: 5%">课表同步时间</th>
             <th class="text-left" style="width: 5%">课表信息</th>
             <th class="text-left" style="width: 5%">选书时间</th>
@@ -32,8 +43,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, idx) in dt" :key="idx">
+          <tr v-for="(item, idx) in dtc" :key="idx">
             <td class="text-left">{{ item.stuName }}</td>
+            <td class="text-left">{{ item.stuId }}</td>
+            <td class="text-left">{{ item.stuSex }}</td>
             <td>
               {{
                 item.lastUpdate === -1
@@ -253,7 +266,7 @@
 <script setup lang="ts">
 import { api } from '@/boot/axios';
 import { useUserStore } from '@/stores/user';
-import { Ref, onMounted, ref, watch } from 'vue';
+import { Ref, computed, onMounted, ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import ErrorText from '@/components/errorText.vue';
 import _ from 'lodash';
@@ -270,6 +283,7 @@ const bookHistoryIdx = ref(0);
 interface AdminBookHistory {
   stuId: string;
   stuName: string;
+  stuSex?: string;
   lastUpdate: number;
   classData: string[];
   classSelectable: string[];
@@ -278,6 +292,10 @@ interface AdminBookHistory {
   payAmount: number;
   needPayAmount: number;
 }
+
+const fli_sex_li = ['全部', '男', '女'];
+const fli_sex = ref(fli_sex_li[0]);
+const fli_have_book = ref(false);
 
 const submiting = ref(false);
 const needChangeSelectList = ref(false);
@@ -290,6 +308,23 @@ const changeTmpMoneyMode = ref(changeTmpMoneyModeList[0]);
 const changeTmpMoneyResult: Ref<number> = ref(0);
 const changeTmpMoney = ref(0);
 
+let dtc = computed(() => {
+  return dt.value.filter((el) => {
+    if (fli_have_book.value) {
+      if (
+        el.lastUpdate === -1 ||
+        el.classData.length === 0 ||
+        el.selectedList.length === 0
+      ) {
+        return false;
+      }
+    }
+    if (fli_sex.value !== '全部') {
+      if (el.stuSex !== fli_sex.value) return false;
+    }
+    return true;
+  });
+});
 function initDetailFormValues(idx: number) {
   bookHistoryIdx.value = idx;
   bookHistoryTmp.value = _.cloneDeep(dt.value[idx]);
