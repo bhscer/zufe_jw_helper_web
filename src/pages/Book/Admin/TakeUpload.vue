@@ -1,5 +1,8 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page
+    class="flex flex-center"
+    style="flex-wrap: wrap; flex-direction: column"
+  >
     <div class="q-ma-md">
       <div class="row">
         <q-input class="col" label="学号" v-model="stuId" outlined />

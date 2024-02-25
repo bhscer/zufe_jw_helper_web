@@ -16,94 +16,101 @@
     <q-page v-if="dt.length === 0" class="flex flex-center">
       <error-text msg="没有记录哦~"></error-text>
     </q-page>
-    <q-markup-table v-else>
-      <thead>
-        <tr>
-          <th class="text-left" style="width: 5%">姓名</th>
-          <th class="text-left" style="width: 5%">课表同步时间</th>
-          <th class="text-left" style="width: 5%">课表信息</th>
-          <th class="text-left" style="width: 5%">选书时间</th>
-          <th class="text-left" style="width: 5%">选书信息</th>
-          <th class="text-left" style="width: 5%">支付金额</th>
-          <th class="text-center" style="width: 10%">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, idx) in dt" :key="idx">
-          <td class="text-left">{{ item.stuName }}</td>
-          <td>
-            {{
-              item.lastUpdate === -1
-                ? '未同步'
-                : $TimestampToDate(item.lastUpdate)
-            }}
-          </td>
-          <td>
-            {{
-              item.lastUpdate === -1
-                ? ''
-                : item.classData.length === 0
-                ? '0门(或用户未同步就不订书)'
-                : item.classData[0] + ' 等' + item.classData.length + '门'
-            }}
 
-            <q-tooltip
-              v-if="item.lastUpdate !== -1 && item.classData.length > 0"
-            >
-              {{ item.classData }}
-            </q-tooltip>
-          </td>
-          <td>
-            {{
-              item.lastSelect === -1
-                ? '未选书'
-                : $TimestampToDate(item.lastSelect)
-            }}
-          </td>
-          <td>
-            {{
-              item.lastSelect === -1
-                ? ''
-                : item.selectedList.length === 0
-                ? '0门'
-                : item.selectedList[0] + ' 等' + item.selectedList.length + '门'
-            }}
+    <div v-else>
+      <div>{{ `已支付:${ana_paied}, 未支付:${ana_need_pay}` }}</div>
+      <q-markup-table>
+        <thead>
+          <tr>
+            <th class="text-left" style="width: 5%">姓名</th>
+            <th class="text-left" style="width: 5%">课表同步时间</th>
+            <th class="text-left" style="width: 5%">课表信息</th>
+            <th class="text-left" style="width: 5%">选书时间</th>
+            <th class="text-left" style="width: 5%">选书信息</th>
+            <th class="text-left" style="width: 5%">支付金额</th>
+            <th class="text-center" style="width: 10%">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, idx) in dt" :key="idx">
+            <td class="text-left">{{ item.stuName }}</td>
+            <td>
+              {{
+                item.lastUpdate === -1
+                  ? '未同步'
+                  : $TimestampToDate(item.lastUpdate)
+              }}
+            </td>
+            <td>
+              {{
+                item.lastUpdate === -1
+                  ? ''
+                  : item.classData.length === 0
+                  ? '0门(或用户未同步就不订书)'
+                  : item.classData[0] + ' 等' + item.classData.length + '门'
+              }}
 
-            <q-tooltip
-              v-if="item.lastSelect !== -1 && item.selectedList.length > 0"
-            >
-              {{ item.selectedList }}
-            </q-tooltip>
-          </td>
-          <td
-            :class="
-              Math.abs(item.payAmount - item.needPayAmount) < 1
-                ? ''
-                : 'text-red'
-            "
-          >
-            {{
-              `￥${item.payAmount.toFixed(2)}/￥${item.needPayAmount.toFixed(
-                2
-              )}`
-            }}
-          </td>
-          <td class="text-center">
-            <q-btn
-              label="查看"
-              flat
-              outline
-              rounded
-              color="primary"
-              @click="
-                initDetailFormValues(idx);
-                showDetail = true;
+              <q-tooltip
+                v-if="item.lastUpdate !== -1 && item.classData.length > 0"
+              >
+                {{ item.classData }}
+              </q-tooltip>
+            </td>
+            <td>
+              {{
+                item.lastSelect === -1
+                  ? '未选书'
+                  : $TimestampToDate(item.lastSelect)
+              }}
+            </td>
+            <td>
+              {{
+                item.lastSelect === -1
+                  ? ''
+                  : item.selectedList.length === 0
+                  ? '0门'
+                  : item.selectedList[0] +
+                    ' 等' +
+                    item.selectedList.length +
+                    '门'
+              }}
+
+              <q-tooltip
+                v-if="item.lastSelect !== -1 && item.selectedList.length > 0"
+              >
+                {{ item.selectedList }}
+              </q-tooltip>
+            </td>
+            <td
+              :class="
+                Math.abs(item.payAmount - item.needPayAmount) < 1
+                  ? ''
+                  : 'text-red'
               "
-            ></q-btn>
-          </td>
-        </tr>
-      </tbody>
-    </q-markup-table>
+            >
+              {{
+                `￥${item.payAmount.toFixed(2)}/￥${item.needPayAmount.toFixed(
+                  2
+                )}`
+              }}
+            </td>
+            <td class="text-center">
+              <q-btn
+                label="查看"
+                flat
+                outline
+                rounded
+                color="primary"
+                @click="
+                  initDetailFormValues(idx);
+                  showDetail = true;
+                "
+              ></q-btn>
+            </td>
+          </tr>
+        </tbody>
+      </q-markup-table>
+    </div>
   </div>
 
   <q-dialog v-model="showDetail">
@@ -366,6 +373,10 @@ function editAlert() {
     progress: true,
   });
 }
+
+const ana_paied = ref(0);
+const ana_need_pay = ref(0);
+
 function getBookHistoryList() {
   user.needRefresh = false;
   loading.value = true;
@@ -376,6 +387,12 @@ function getBookHistoryList() {
   })
     .then((data) => {
       dt.value = data.data.reverse();
+      ana_paied.value = 0;
+      ana_need_pay.value = 0;
+      dt.value.forEach((el) => {
+        ana_paied.value += el.payAmount;
+        ana_need_pay.value += el.needPayAmount;
+      });
       loading.value = false;
     })
     .catch((error) => {
