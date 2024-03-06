@@ -48,7 +48,7 @@
         <div>
           <div v-if="!post_data.registerMode && !post_data.need_pwd">
             <q-checkbox
-              label="我需要修改密码"
+              label="我的财大密码已经改了，需要输入新的密码"
               v-model="post_data.change_cas_pwd"
             />
           </div>

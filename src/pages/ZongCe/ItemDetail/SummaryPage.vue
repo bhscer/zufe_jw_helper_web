@@ -39,7 +39,6 @@
                     `${url_prefix}${route.params.partName}/${route.params.childrenName}/new`
                   )
                 "
-                target="_blank"
               >
                 <q-badge
                   label="添加申请"

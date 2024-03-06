@@ -52,11 +52,16 @@
       <div class="text-h6 q-mb-sm">成绩列表</div>
       <p v-if="cur_via === 'pe'">请选择两门体育课程</p>
       <p v-else>请选择除体育课外的全部课程</p>
+      <p>
+        若你存在不及格的课程：
+        如果补考通过请仅勾选该课程的考试类型为补考xxx的选项，其他情况请仅勾选正常考试项
+      </p>
       <q-markup-table>
         <thead>
           <tr>
             <th class="text-left">选择</th>
             <th class="text-left">课程名</th>
+            <th class="text-left">考试类型</th>
             <th class="text-left">学期</th>
             <th class="text-left">学分</th>
             <th class="text-left">分数(系统转换后)</th>
@@ -72,6 +77,7 @@
               />
             </td>
             <td class="text-left">{{ item.name }}</td>
+            <td class="text-left">{{ item.examType }}</td>
             <td class="text-left">{{ item.semester }}</td>
             <td class="text-left">{{ item.xf }}</td>
             <td class="text-left">{{ item.cjFinal }}</td>
@@ -272,13 +278,18 @@ function getCurPart() {
 const classSelectedDict: Ref<{ [key: string]: boolean }> = ref({});
 
 function processMarkList() {
+  // make sort for list
+  classMarkList.value.sort((x, y) => {
+    return x.name.localeCompare(y.name);
+  });
   classSelectedDict.value = {};
   classMarkList.value.forEach((el, idx) => {
     var uname = `${classMarkList.value[idx].semester}:${classMarkList.value[idx].name}`;
     classMarkList.value[idx].uname = uname;
     classSelectedDict.value[uname] = cur_via.value === 'all' ? true : false;
   });
-  if (cur_via.value === 'all') calMark();
+  // if (cur_via.value === 'all')
+  calMark();
 }
 function getUserMarkList() {
   cur_via.value = getCurPart();
