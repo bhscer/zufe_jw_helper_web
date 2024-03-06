@@ -92,7 +92,7 @@ function gen_uuid() {
 function genQR() {
   if (qr_timer !== null) clearInterval(qr_timer);
   uuid = gen_uuid();
-  qr_text.value = `https://jwcas.zufe.edu.cn/cas/qyQrLogin?uuid=${uuid}&service=http://jwxt2.zufe.edu.cn/sso/driotlogin`;
+  qr_text.value = `https://cas.zufe.edu.cn/cas/qyQrLogin?uuid=${uuid}`;
   overdue.value = false;
   qr_timer = setInterval(qrOverdueFun, 120 * 1000);
 }
